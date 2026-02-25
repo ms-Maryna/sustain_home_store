@@ -27,20 +27,30 @@ export const DisplayProduct = props =>
                 console.log("Record not found")
             }
         })
-        .catch(err =>
-        {
-            console.log("Record not found")
-        })
-    }, [])
+        .catch(err => console.log(`${err.response ? err.response.data : err.message}\n${err}`))
+    }, [props.match.params.id])
+
 
     if(!product)
     {
         return <h3>Loading...</h3>
     }
 
+
     return (
     <div className="form-container">
         <h3>{product.name}</h3>
+
+        <div style={{marginBottom:"15px"}}>
+            {product.images && product.images.map((img, index) =>
+                <img
+                    key={index}
+                    src={`/images/${img}`}
+                    alt={product.name}
+                    style={{width:"160px", marginRight:"10px", marginBottom:"10px"}}
+                />
+            )}
+        </div>
 
         <p><b>Category:</b> {product.category}</p>
         <p><b>Price:</b> €{product.price}</p>

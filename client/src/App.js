@@ -6,7 +6,7 @@ import {Home} from "./components/Home"
 import {About} from "./components/About"
 import {AddProduct} from "./components/AddProduct"
 
-import "bootstrap/dist/css/bootstrap.css"
+
 import "./css/App.css"
 
 export const App = props =>
