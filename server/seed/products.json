@@ -9,7 +9,7 @@
 "condition": "New",
 "powerUsage": 1800,
 "ecoCertified": true,
-"images": ["kettle.jpg"],
+"images": ["Kettle1.png", "Kettle2.png", "Kettle3.png", "Kettle4.png"],
 "description": "Electric kettle"
 },
 {
@@ -22,7 +22,7 @@
 "condition": "New",
 "powerUsage": 800,
 "ecoCertified": true,
-"images": ["toaster.jpg"],
+"images": ["Toaster1.png", "Toaster2.png", "Toaster3.png", "Toaster4.png"],
 "description": "Bread toaster"
 },
 {
@@ -35,7 +35,7 @@
 "condition": "New",
 "powerUsage": 600,
 "ecoCertified": true,
-"images": ["blender.jpg"],
+"images": ["Blender1.png", "Blender2.png", "Blender3.png", "Blender4.png"],
 "description": "Kitchen blender"
 },
 {
@@ -48,7 +48,7 @@
 "condition": "New",
 "powerUsage": 1200,
 "ecoCertified": false,
-"images": ["microwave.jpg"],
+"images": ["Microwave1.png", "Microwave2.png", "Microwave3.png", "Microwave4.png"],
 "description": "Microwave oven"
 },
 {
@@ -61,7 +61,7 @@
 "condition": "New",
 "powerUsage": 150,
 "ecoCertified": true,
-"images": ["fridge.jpg"],
+"images": ["Fridge1.png", "Fridge2.png", "Fridge3.png"],
 "description": "Refrigerator"
 },
 {
@@ -74,7 +74,7 @@
 "condition": "New",
 "powerUsage": 700,
 "ecoCertified": true,
-"images": ["hoover.jpg"],
+"images": ["Hoover1.png", "Hoover2.png", "Hoover3.png"],
 "description": "Vacuum cleaner"
 },
 {
@@ -87,7 +87,7 @@
 "condition": "New",
 "powerUsage": 0,
 "ecoCertified": true,
-"images": ["mop.jpg"],
+"images": ["Mop1.png", "Mop2.png", "Mop3.png"],
 "description": "Floor mop"
 },
 {
@@ -100,7 +100,7 @@
 "condition": "New",
 "powerUsage": 1200,
 "ecoCertified": true,
-"images": ["steam.jpg"],
+"images": ["Steam_cleaner1.png", "Steam_cleaner2.png", "Steam_cleaner3.png", "Steam_cleaner4.png"],
 "description": "Steam cleaner"
 },
 {
@@ -113,7 +113,7 @@
 "condition": "New",
 "powerUsage": 2000,
 "ecoCertified": true,
-"images": ["washing.jpg"],
+"images": ["Washing_machine1.png", "Washing_machine2.png", "Washing_machine3.png"],
 "description": "Washer"
 },
 {
@@ -126,7 +126,7 @@
 "condition": "New",
 "powerUsage": 2200,
 "ecoCertified": false,
-"images": ["dryer.jpg"],
+"images": ["Dryer1.png", "Dryer2.png", "Dryer3.png"],
 "description": "Clothes dryer"
 },
 {
@@ -139,7 +139,7 @@
 "condition": "New",
 "powerUsage": 50,
 "ecoCertified": true,
-"images": ["air.jpg"],
+"images": ["Air_purifier1.png", "Air_purifier2.png","Air_purifier3.png", "Air_purifier4.png"],
 "description": "Air purifier"
 },
 {
@@ -152,7 +152,7 @@
 "condition": "New",
 "powerUsage": 250,
 "ecoCertified": true,
-"images": ["dehumidifier.jpg"],
+"images": ["Dehumidifier1.png", "Dehumidifier2.png", "Dehumidifier3.png"],
 "description": "Dehumidifier"
 },
 {
@@ -165,7 +165,7 @@
 "condition": "New",
 "powerUsage": 45,
 "ecoCertified": true,
-"images": ["fan.jpg"],
+"images": ["Fan1.png", "Fan2.png", "Fan3.png"],
 "description": "Electric fan"
 },
 {
@@ -178,7 +178,7 @@
 "condition": "New",
 "powerUsage": 2000,
 "ecoCertified": false,
-"images": ["heater.jpg"],
+"images": ["Heater1.png","Heater2.png","Heater3.png"],
 "description": "Room heater"
 },
 {
@@ -191,7 +191,7 @@
 "condition": "New",
 "powerUsage": 300,
 "ecoCertified": true,
-"images": ["solar.jpg"],
+"images": ["Solar_panel1.png","Solar_panel2.png","Solar_panel3.png"],
 "description": "Solar panel"
 },
 {
@@ -204,7 +204,7 @@
 "condition": "New",
 "powerUsage": 1,
 "ecoCertified": true,
-"images": ["plug.jpg"],
+"images": ["Smart_plug1.png", "Smart_plug2.png","Smart_plug3.png"],
 "description": "Smart plug"
 },
 {
@@ -217,7 +217,7 @@
 "condition": "New",
 "powerUsage": 2,
 "ecoCertified": true,
-"images": ["meter.jpg"],
+"images": ["Power_meter1.png", "Power_meter2.png", "Power_meter3.png"],
 "description": "Energy monitor"
 }
 ]

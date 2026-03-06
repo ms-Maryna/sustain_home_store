@@ -1,7 +1,10 @@
-import React from "react"
+import React, {useState} from "react"
+import {SERVER_HOST} from "../config/global_constants"
 
 export const ProductModal = props =>
 {
+    const [imgIndex, setImgIndex] = useState(0)
+
     if(!props.product) return null
 
     const closeOnBackdrop = e =>
@@ -12,10 +15,31 @@ export const ProductModal = props =>
         }
     }
 
-    const mainImage =
-        props.product.images && props.product.images.length > 0
-            ? `/images/${props.product.images[0]}`
-            : null
+    const images = (props.product.images && props.product.images.length > 0)
+        ? props.product.images
+        : []
+
+    // reset index if product changes or images shorter
+    let safeIndex = imgIndex
+    if(safeIndex >= images.length) safeIndex = 0
+
+    const showPrev = () =>
+    {
+        if(images.length < 2) return
+        const next = safeIndex - 1
+        setImgIndex(next < 0 ? images.length - 1 : next)
+    }
+
+    const showNext = () =>
+    {
+        if(images.length < 2) return
+        const next = safeIndex + 1
+        setImgIndex(next >= images.length ? 0 : next)
+    }
+
+    const mainImageUrl = images.length > 0
+        ? `${SERVER_HOST}/uploads/products/${images[safeIndex]}`
+        : null
 
     return (
         <div className="modal-backdrop" onClick={closeOnBackdrop}>
@@ -26,8 +50,32 @@ export const ProductModal = props =>
                 </div>
 
                 <div className="modal-body">
-                    {mainImage ? (
-                        <img className="modal-image" src={mainImage} alt={props.product.name}/>
+                    {mainImageUrl ? (
+                        <div className="modal-image-wrap">
+                            <img className="modal-image" src={mainImageUrl} alt={props.product.name}/>
+
+                            {images.length > 1 ? (
+                                <div className="modal-arrows">
+                                    <button type="button" className="arrow-btn" onClick={showPrev}>‹</button>
+                                    <button type="button" className="arrow-btn" onClick={showNext}>›</button>
+                                </div>
+                            ) : null}
+
+                            {images.length > 1 ? (
+                                <div className="modal-thumbs">
+                                    {images.map((fn, i) =>
+                                    (
+                                        <img
+                                            key={i}
+                                            className={i === safeIndex ? "thumb thumb-active" : "thumb"}
+                                            src={`${SERVER_HOST}/uploads/products/${fn}`}
+                                            alt=""
+                                            onClick={() => setImgIndex(i)}
+                                        />
+                                    ))}
+                                </div>
+                            ) : null}
+                        </div>
                     ) : (
                         <div className="modal-image-placeholder">No image</div>
                     )}
@@ -52,5 +100,3 @@ export const ProductModal = props =>
         </div>
     )
 }
-
-

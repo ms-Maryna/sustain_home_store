@@ -1,150 +1,107 @@
-import React, {useState} from "react"
-import {Redirect, Link} from "react-router-dom"
-import axios from "axios"
-import {SERVER_HOST} from "../config/global_constants"
+import React, { useState } from "react";
+import axios from "axios";
+import { SERVER_HOST } from "../config/global_constants";
 
+export const AddProduct = (props) => {
+  const [name, setName] = useState("");
+  const [category, setCategory] = useState("");
+  const [price, setPrice] = useState("");
+  const [stock, setStock] = useState("");
+  const [powerUsage, setPowerUsage] = useState("");
+  const [energyRating, setEnergyRating] = useState("A");
+  const [condition, setCondition] = useState("new");
+  const [ecoCertified, setEcoCertified] = useState(true);
+  const [images, setImages] = useState([]);
+  const [error, setError] = useState("");
 
-export const AddProduct = props =>
-{
-    const [name, setName] = useState("")
-    const [category, setCategory] = useState("")
-    const [price, setPrice] = useState("")
-    const [stock, setStock] = useState("")
-    const [energyRating, setEnergyRating] = useState("")
-    const [brand, setBrand] = useState("")
-    const [condition, setCondition] = useState("")
-    const [powerUsage, setPowerUsage] = useState("")
-    const [ecoCertified, setEcoCertified] = useState(false)
-    const [images, setImages] = useState("")
-    const [description, setDescription] = useState("")
-    const [redirectToDisplayAllProducts, setRedirectToDisplayAllProducts] = useState(false)
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
 
-
-    const handleNameChange = e => { setName(e.target.value) }
-    const handleCategoryChange = e => { setCategory(e.target.value) }
-    const handlePriceChange = e => { setPrice(e.target.value) }
-    const handleStockChange = e => { setStock(e.target.value) }
-    const handleEnergyRatingChange = e => { setEnergyRating(e.target.value) }
-    const handleBrandChange = e => { setBrand(e.target.value) }
-    const handleConditionChange = e => { setCondition(e.target.value) }
-    const handlePowerUsageChange = e => { setPowerUsage(e.target.value) }
-    const handleEcoCertifiedChange = e => { setEcoCertified(e.target.checked) }
-    const handleImagesChange = e => { setImages(e.target.value) }
-    const handleDescriptionChange = e => { setDescription(e.target.value) }
-
-
-    const handleSubmit = e =>
-    {
-        e.preventDefault()
-
-        const imagesArray = images.split(",").map(s => s.trim()).filter(s => s.length > 0)
-
-        const productObject =
-        {
-            name: name,
-            category: category,
-            price: Number(price),
-            stock: Number(stock),
-            energyRating: energyRating,
-            brand: brand,
-            condition: condition,
-            powerUsage: Number(powerUsage),
-            ecoCertified: ecoCertified,
-            images: imagesArray,
-            description: description
-        }
-
-        axios.post(`${SERVER_HOST}/products`, productObject)
-        .then(res =>
-        {
-            if(res.data)
-            {
-                if(res.data.errorMessage)
-                {
-                    console.log(res.data.errorMessage)
-                }
-                else
-                {
-                    console.log("Record added")
-                    setRedirectToDisplayAllProducts(true)
-                }
-            }
-            else
-            {
-                console.log("Record not added")
-            }
-        })
+    if (!name || !category || !price || !stock || images.length === 0) {
+      setError("All fields and at least one image are required!");
+      return;
     }
 
+    try {
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("category", category);
+      formData.append("price", price);
+      formData.append("stock", stock);
+      formData.append("powerUsage", powerUsage);
+      formData.append("energyRating", energyRating);
+      formData.append("condition", condition);
+      formData.append("ecoCertified", ecoCertified);
+      images.forEach((img) => formData.append("images", img));
 
-    return (
-    <div className="form-container">
-        {redirectToDisplayAllProducts ? <Redirect to="/products"/> : null}
+      const token = localStorage.token; // JWT from login
 
-        <h3>Add Product</h3>
+      await axios.post(`${SERVER_HOST}/api/products`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-        <form onSubmit={handleSubmit}>
-            <div>
-                <label>Name: </label>
-                <input value={name} onChange={handleNameChange}/>
-            </div>
+      props.history.push("/admin/products");
+    } catch (err) {
+      setError(err.response?.data || "Failed to add product");
+    }
+  };
 
-            <div>
-                <label>Category: </label>
-                <input value={category} onChange={handleCategoryChange}/>
-            </div>
+  const handleImageUpload = (e) => {
+    const files = Array.from(e.target.files);
+    setImages(files);
+  };
 
-            <div>
-                <label>Price: </label>
-                <input value={price} onChange={handlePriceChange}/>
-            </div>
+  return (
+    <div className="adminPanel">
+      <h2>Add New Product</h2>
+      {error && <div className="errorBox">{error}</div>}
+      <form onSubmit={handleSubmit} className="productForm">
+        <label>Name:
+          <input type="text" value={name} onChange={e => setName(e.target.value)} />
+        </label>
 
-            <div>
-                <label>Stock: </label>
-                <input value={stock} onChange={handleStockChange}/>
-            </div>
+        <label>Category:
+          <input type="text" value={category} onChange={e => setCategory(e.target.value)} />
+        </label>
 
-            <div>
-                <label>Energy Rating: </label>
-                <input value={energyRating} onChange={handleEnergyRatingChange}/>
-            </div>
+        <label>Price (€):
+          <input type="number" value={price} onChange={e => setPrice(e.target.value)} />
+        </label>
 
-            <div>
-                <label>Brand: </label>
-                <input value={brand} onChange={handleBrandChange}/>
-            </div>
+        <label>Stock:
+          <input type="number" value={stock} onChange={e => setStock(e.target.value)} />
+        </label>
 
-            <div>
-                <label>Condition: </label>
-                <input value={condition} onChange={handleConditionChange}/>
-            </div>
+        <label>Power Usage (W):
+          <input type="number" value={powerUsage} onChange={e => setPowerUsage(e.target.value)} />
+        </label>
 
-            <div>
-                <label>Power Usage: </label>
-                <input value={powerUsage} onChange={handlePowerUsageChange}/>
-            </div>
+        <label>Energy Rating:
+          <select value={energyRating} onChange={e => setEnergyRating(e.target.value)}>
+            {["A","B","C","D","E","F","G"].map(r => <option key={r} value={r}>{r}</option>)}
+          </select>
+        </label>
 
-            <div>
-                <label>Eco Certified: </label>
-                <input type="checkbox" checked={ecoCertified} onChange={handleEcoCertifiedChange}/>
-            </div>
+        <label>Condition:
+          <select value={condition} onChange={e => setCondition(e.target.value)}>
+            {["new","used","refurbished"].map(c => <option key={c} value={c}>{c}</option>)}
+          </select>
+        </label>
 
-            <div>
-                <label>Images (comma separated): </label>
-                <input value={images} onChange={handleImagesChange}/>
-            </div>
+        <label>Eco Certified:
+          <input type="checkbox" checked={ecoCertified} onChange={e => setEcoCertified(e.target.checked)} />
+        </label>
 
-            <div>
-                <label>Description: </label>
-                <input value={description} onChange={handleDescriptionChange}/>
-            </div>
+        <label>Images:
+          <input type="file" multiple onChange={handleImageUpload} />
+        </label>
 
-            <button type="submit">Submit</button>
-
-            <Link to="/products">
-                <button type="button">Cancel</button>
-            </Link>
-        </form>
+        <button type="submit">Add Product</button>
+      </form>
     </div>
-    )
-}
+  );
+};

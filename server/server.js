@@ -1,39 +1,80 @@
-// Server-side global variables
-require("dotenv").config({path:"./config/.env"})
+// server/app.js
 
-// Database
-require("./config/db")
+// ===============================
+// Load environment variables
+// ===============================
+require("dotenv").config({ path: "./config/.env" });
 
-// Express
-const express = require("express")
-const createError = require("http-errors")
+// ===============================
+// Database connection
+// ===============================
+require("./config/db");
 
-const app = express()
+// ===============================
+// Import modules
+// ===============================
+const express = require("express");
+const createError = require("http-errors");
+const path = require("path");
+const cors = require("cors");
+const bodyParser = require("body-parser");
 
-app.use(require("body-parser").json())
-app.use(require("cors")({credentials: true, origin: process.env.LOCAL_HOST}))
+// ===============================
+// Import routers
+// ===============================
+const productsRouter = require("./routes/products");
+const usersRouter = require("./routes/users");
+const purchasesRouter = require("./routes/purchases")
 
-app.get("/", (req, res) => res.send("Server works"))
-// Routers
-app.use(require("./routes/products"))
-app.use(require("./routes/users"))   
+// ===============================
+// Import error middleware
+// ===============================
+const errorHandler = require("./middleware/errorMiddleware");
 
-// Port
-app.listen(process.env.SERVER_PORT, () =>
-{
-    console.log("Connected to port " + process.env.SERVER_PORT)
-})
+// ===============================
+// Initialize Express app
+// ===============================
+const app = express();
 
-// Error 404
-app.use((req, res, next) => {next(createError(404))})
+// ===============================
+// Middleware
+// ===============================
 
-// Other errors
-app.use(function (err, req, res, next)
-{
-    console.error(err.message)
-    if (!err.statusCode)
-    {
-        err.statusCode = 500
-    }
-    res.status(err.statusCode).send(err.message)
-})
+// Parse JSON bodies
+app.use(bodyParser.json());
+
+// Enable CORS
+app.use(cors({ credentials: true, origin: process.env.LOCAL_HOST }));
+
+// Serve static files (uploaded images)
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+// ===============================
+// Routes
+// ===============================
+app.get("/", (req, res) => res.send("Server works"));
+
+// Use routers for API endpoints
+app.use("/api/products", productsRouter);
+app.use("/api/users", usersRouter);
+app.use("/purchases", purchasesRouter);
+
+// ===============================
+// Catch 404 errors
+// ===============================
+app.use((req, res, next) => {
+  next(createError(404, "Resource not found"));
+});
+
+// ===============================
+// Error handling middleware
+// ===============================
+// This will handle all errors thrown in routes or other middleware
+app.use(errorHandler);
+
+// ===============================
+// Start server
+// ===============================
+app.listen(process.env.SERVER_PORT, () => {
+  console.log(`Connected to port ${process.env.SERVER_PORT}`);
+});

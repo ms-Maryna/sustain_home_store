@@ -1,8 +1,11 @@
-{
+
+  {
   "name": "react_app",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:4000",
   "dependencies": {
+    "@paypal/react-paypal-js": "^9.0.1",
     "axios": "^1.13.5",
     "react": "^16.9.0",
     "react-bootstrap": "^1.0.0-beta.11",
@@ -10,6 +13,7 @@
     "react-router-dom": "^5.0.1",
     "react-scripts": "^5.0.1"
   },
+
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
