@@ -71,9 +71,16 @@ export const Profile = () =>
             }
         })
         .then(res =>
+{
+        setUser(res.data)
+
+        if(res.data.profileImage)
         {
-            setSuccess("Profile updated successfully")
-        })
+        setPreview(`${SERVER_HOST}/uploads/${res.data.profileImage}`)
+        }
+
+    setSuccess("Profile updated successfully")
+})
         .catch(err =>
         {
             setError("Profile update failed")

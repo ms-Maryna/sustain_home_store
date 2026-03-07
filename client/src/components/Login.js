@@ -30,12 +30,10 @@ export const Login = props => {
             localStorage.name = res.data.name
             localStorage.accessLevel = res.data.accessLevel
             localStorage.token = res.data.token
-            setIsLoggedIn(true)
+             setIsLoggedIn(true)
         })
         .catch(err => {
-            // ✅ Исправляем: берём строку из объекта
             if (err.response && err.response.data) {
-                // Если сервер прислал объект {error, message}
                 const msg = err.response.data.message || "Login failed"
                 setErrorMessage(msg)
             } else {
@@ -45,50 +43,58 @@ export const Login = props => {
     }
 
     return (
-        <form className="form-container" noValidate={true} id="loginOrRegistrationForm">
-            <h2>Login</h2>
+        <form className="loginCard" noValidate={true} id="loginOrRegistrationForm" onSubmit={handleSubmit}>
+            <h2 className="loginTitle">Login</h2>
 
             {isLoggedIn && <Redirect to="/products" />}
 
-            
             {errorMessage && <div className="error-message">{errorMessage}</div>}
 
-            <input
-                type="email"
-                name="email"
-                placeholder="Email"
-                autoComplete="email"
-                value={email}
-                onChange={handleEmailChange}
-                autoFocus
-            /><br/>
+            <div className="loginField">
+                <label>Email</label>
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="Enter your email"
+                    autoComplete="email"
+                    value={email}
+                    onChange={handleEmailChange}
+                    autoFocus
+                />
+            </div>
 
-            <input
-                type="password"
-                name="password"
-                placeholder="Password"
-                autoComplete="current-password"
-                value={password}
-                onChange={handlePasswordChange}
-            /><br/><br/>
+            <div className="loginField">
+                <label>Password</label>
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="Enter your password"
+                    autoComplete="current-password"
+                    value={password}
+                    onChange={handlePasswordChange}
+                />
+            </div>
 
-            <Button value="Login" className="green-button" onClick={handleSubmit}/>
-            <Link className="red-button" to="/products">Cancel</Link>
+            <div className="loginActions">
+                <Button value="Login" className="green-button" type="submit" />
+                <Link className="cancelButton" to="/products">Cancel</Link>
+            </div>
 
             <div className="authHint">
                 <p className="authHintText">
                     New customer? Create an account to save your profile and view purchase history.
                 </p>
+
                 <Link className="authHintLink" to="/register">
                     Register here
                 </Link>
+
                 <p className="authHintSmall">
                     Guest customers can still order online without registering.
                 </p>
-                <p>Guest customers can still order online without registering.</p>
 
-                <Link className="green-button" to="/checkout">
-                Checkout as Guest
+                <Link className="guestCheckoutButton" to="/checkout">
+                    Checkout as Guest
                 </Link>
             </div>
         </form>

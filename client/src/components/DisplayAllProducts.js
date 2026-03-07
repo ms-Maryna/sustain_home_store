@@ -6,7 +6,7 @@ import { ProductCardGrid } from "./ProductCardGrid";
 import { ProductModal } from "./ProductModal";
 
 export const DisplayAllProducts = () => {
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState([]);       // all products from server
   const [selectedProduct, setSelectedProduct] = useState(null);
 
   const [searchText, setSearchText] = useState("");
@@ -22,26 +22,30 @@ export const DisplayAllProducts = () => {
 
     axios.get(`${SERVER_HOST}/api/products`)
       .then(res => {
-        if(isMounted) setProducts(res.data);
+        // ensure products is always an array
+        if (isMounted) setProducts(Array.isArray(res.data) ? res.data : []);
       })
       .catch(err => {
-        if(isMounted) setErrorMessage(err.response?.data || err.message);
+        if (isMounted) setErrorMessage(err.response?.data?.message || err.message);
+        setProducts([]); // fallback to empty array
       })
-      .finally(() => isMounted && setLoading(false));
+      .finally(() => { if(isMounted) setLoading(false); });
 
     return () => { isMounted = false; };
   }, []);
 
-  // FILTER/CATEGORY/SORT
-  const categories = ["All", ...Array.from(new Set(products.map(p => p.category)))];
+  // get categories safely
+  const categories = ["All", ...Array.from(new Set(Array.isArray(products) ? products.map(p => p.category) : []))];
 
-  let filtered = products;
-  if(selectedCategory !== "All") filtered = filtered.filter(p => p.category === selectedCategory);
-  if(searchText.trim()) filtered = filtered.filter(p => (p.name || "").toLowerCase().includes(searchText.toLowerCase()));
+  // filter products
+  let filtered = Array.isArray(products) ? [...products] : [];
+  if (selectedCategory !== "All") filtered = filtered.filter(p => p.category === selectedCategory);
+  if (searchText.trim()) filtered = filtered.filter(p => (p.name || "").toLowerCase().includes(searchText.toLowerCase()));
 
-  if(sortOption === "name") filtered = [...filtered].sort((a,b) => (a.name || "").localeCompare(b.name || ""));
-  else if(sortOption === "priceLow") filtered = [...filtered].sort((a,b) => a.price - b.price);
-  else if(sortOption === "priceHigh") filtered = [...filtered].sort((a,b) => b.price - a.price);
+  // sort products
+  if (sortOption === "name") filtered.sort((a,b) => (a.name || "").localeCompare(b.name || ""));
+  else if (sortOption === "priceLow") filtered.sort((a,b) => (a.price || 0) - (b.price || 0));
+  else if (sortOption === "priceHigh") filtered.sort((a,b) => (b.price || 0) - (a.price || 0));
 
   const addToCart = product => {
     const saved = localStorage.getItem("cart");

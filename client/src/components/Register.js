@@ -1,7 +1,9 @@
 import React, {useState} from "react"
 import axios from "axios"
 
-const SERVER_HOST = "http://localhost:4000/api"
+import {SERVER_HOST} from "../config/global_constants"
+
+
 
 export const Register = () => {
 

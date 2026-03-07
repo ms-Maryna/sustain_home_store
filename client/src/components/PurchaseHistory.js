@@ -9,7 +9,7 @@ export const PurchaseHistory = () =>
 
     useEffect(() =>
     {
-        axios.get(`${SERVER_HOST}/purchases/my`,
+        axios.get(`${SERVER_HOST}/api/purchases/my`,
         {
             headers:{authorization:localStorage.token}
         })

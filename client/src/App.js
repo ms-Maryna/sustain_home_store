@@ -74,10 +74,10 @@ export const App = props =>
 
                     <Route path="/products" component={StorePage}/>
                    
-<Route exact path="/cart" component={Cart}/>
-<Route exact path="/payment" component={Payment}/>
+                    <Route exact path="/cart" component={Cart}/>
+                    <Route exact path="/payment" component={Payment}/>
 
-<Route exact path="/checkout" component={Checkout}/>
+                    <Route exact path="/checkout" component={Checkout}/>
 
 
                     <Route path="/paypal/:messageType" component={PayPalMessage}/>

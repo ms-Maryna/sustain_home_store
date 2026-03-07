@@ -1,18 +1,17 @@
 const router = require("express").Router();
 const createError = require("http-errors");
 const usersModel = require("../models/users");
-
 const fs = require("fs");
 const path = require("path");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const multerMiddleware = require("../middleware/middlewareFile");
 
-// KEYS
+// ===== JWT KEYS =====
 const PRIVATE_KEY = fs.readFileSync(path.join(__dirname, "../keys/private.pem"), "utf8");
 const PUBLIC_KEY = fs.readFileSync(path.join(__dirname, "../keys/public.pem"), "utf8");
 
-// ===== RESET USERS  =====
+// ===== RESET USERS =====
 router.post(`/reset_user_collection`, (req, res, next) => {
     usersModel.deleteMany({})
     .then(() => {
@@ -86,12 +85,12 @@ router.post(`/login/:email/:password`, (req, res, next) => {
     .catch(err => next(err));
 });
 
-// ===== PROFILE GET =====
+// ===== GET PROFILE =====
 router.get("/profile", (req, res, next) => {
-    const authHeader = req.headers.authorization;
-    if(!authHeader) return next(createError(403, "No token provided"));
+    const token = req.headers.authorization;
+    if(!token) return next(createError(403, "No token provided"));
 
-    jwt.verify(authHeader, PUBLIC_KEY, { algorithms: ["RS256"] }, (err, decoded) => {
+    jwt.verify(token, PUBLIC_KEY, { algorithms: ["RS256"] }, (err, decoded) => {
         if(err) return next(createError(403, "Invalid token"));
 
         usersModel.findOne({email: decoded.email}, {password: 0})
@@ -103,44 +102,81 @@ router.get("/profile", (req, res, next) => {
     });
 });
 
-// ===== PROFILE UPDATE =====
+// ===== UPDATE PROFILE =====
 router.put("/profile", multerMiddleware.uploadProfileImage.single("profileImage"), (req, res, next) => {
-    const authHeader = req.headers.authorization;
-    if(!authHeader) {
-        if(req.file) fs.unlinkSync(`${process.env.UPLOADED_FILES_FOLDER}/${req.file.filename}`);
+    const token = req.headers.authorization;
+    if(!token) {
+        // delete uploaded file if no token
+        if(req.file) fs.unlinkSync(path.join(process.env.UPLOADED_FILES_FOLDER, "profile", req.file.filename));
         return next(createError(403, "No token provided"));
     }
 
-    jwt.verify(authHeader, PUBLIC_KEY, { algorithms: ["RS256"] }, (err, decoded) => {
+    jwt.verify(token, PUBLIC_KEY, { algorithms: ["RS256"] }, (err, decoded) => {
         if(err) {
-            if(req.file) fs.unlinkSync(`${process.env.UPLOADED_FILES_FOLDER}/${req.file.filename}`);
+            if(req.file) fs.unlinkSync(path.join(process.env.UPLOADED_FILES_FOLDER, "profile", req.file.filename));
             return next(createError(403, "Invalid token"));
         }
 
         const update = {};
         if(req.body.name) update.name = req.body.name;
-        if(req.body.address) update.address = req.body.address;
         if(req.body.phone) update.phone = req.body.phone;
+        if(req.body.address) update.address = req.body.address;
+
         if(req.file) {
-            const mimetype = req.file.mimetype;
-            if(!["image/png","image/jpg","image/jpeg"].includes(mimetype)) {
+            // validate image type
+            const allowedTypes = ["image/png","image/jpg","image/jpeg"];
+            if(!allowedTypes.includes(req.file.mimetype)) {
                 fs.unlinkSync(`${process.env.UPLOADED_FILES_FOLDER}/${req.file.filename}`);
                 return next(createError(400, "Invalid image type"));
             }
-            update.profileImage = req.file.filename;
+            update.profileImage = `profile/${req.file.filename}`;
         }
 
+        // update user in DB
         usersModel.findOneAndUpdate(
             {email: decoded.email},
             {$set: update},
-            {new: true, projection: {password: 0}}
+            { returnDocument: "after", projection: { password: 0 } } 
         )
         .then(user => {
             if(!user) return next(createError(404, "User not found"));
             res.json(user);
         })
         .catch(err => next(err));
-    })
+    });
+});
+
+// ===== GET ALL USERS (ADMIN) =====
+router.get("/", (req, res, next) => {
+    const token = req.headers.authorization;
+    if(!token) return next(createError(403, "No token provided"));
+
+    jwt.verify(token, PUBLIC_KEY, { algorithms: ["RS256"] }, (err, decoded) => {
+        if(err) return next(createError(403, "Invalid token"));
+        if(decoded.accessLevel < parseInt(process.env.ACCESS_LEVEL_ADMIN)) return next(createError(403, "Not an admin"));
+
+        usersModel.find({}, {password: 0})
+        .then(users => res.json(users))
+        .catch(err => next(err));
+    });
+});
+
+// ===== GET USER BY ID (ADMIN) =====
+router.get("/:id", (req, res, next) => {
+    const token = req.headers.authorization;
+    if(!token) return next(createError(403, "No token provided"));
+
+    jwt.verify(token, PUBLIC_KEY, { algorithms: ["RS256"] }, (err, decoded) => {
+        if(err) return next(createError(403, "Invalid token"));
+        if(decoded.accessLevel < parseInt(process.env.ACCESS_LEVEL_ADMIN)) return next(createError(403, "Not an admin"));
+
+        usersModel.findById(req.params.id, {password: 0})
+        .then(user => {
+            if(!user) return next(createError(404, "User not found"));
+            res.json(user);
+        })
+        .catch(err => next(err));
+    });
 });
 
 module.exports = router;

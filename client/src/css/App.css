@@ -34,6 +34,674 @@ body{
 a{ color: inherit; }
 
 
+
+/* =========================
+   HOME HERO
+========================= */
+
+.homeHero{
+  min-height: 85vh;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.homeHero::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background: rgba(0,0,0,0.28); /* lighter overlay */
+}
+
+/* smaller, more transparent circle */
+.homeGlassCircle{
+  position: relative;
+  width: 340px;              /* smaller */
+  height: 340px;             /* perfect circle */
+  max-width: 86vw;
+  max-height: 86vw;
+  border-radius: 999px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding: 26px;
+
+  background: rgba(255,255,255,0.10);   /* more transparent */
+  border: 1px solid rgba(255,255,255,0.20);
+  backdrop-filter: blur(12px);
+
+  color: #fff;
+  box-shadow: 0 18px 45px rgba(0,0,0,0.25);
+}
+
+.homeGlassCircle h1{
+  font-size: 30px;
+  margin: 0 0 10px 0;
+  line-height: 1.12;
+}
+
+.homeGlassCircle p{
+  font-size: 14px;
+  opacity: 0.92;
+  margin: 0;
+  max-width: 240px;
+}
+
+@media (max-width: 480px){
+  .homeGlassCircle h1{ font-size: 28px; }
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+.about-container{
+  background: var(--cream);
+  padding: 40px 20px;
+}
+
+.about-wrap{
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.about-head{
+  text-align:center;
+  margin-bottom: 26px;
+}
+
+.about-head h1{
+  margin: 0 0 10px 0;
+  font-size: 34px;
+}
+
+.about-head p{
+  margin:0 auto;
+  max-width: 760px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.about-section{
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr; /* text a bit wider */
+  align-items: center;
+  gap: 28px;
+  margin: 22px 0;
+  padding: 18px;
+  background: rgba(255,255,255,0.75);
+  border: 1px solid rgba(0,0,0,0.06);
+  border-radius: 18px;
+}
+
+.about-section.reverse{
+  grid-template-columns: 0.95fr 1.05fr;
+}
+
+.about-text h2{
+  margin: 0 0 10px 0;
+  font-size: 24px;
+  color: var(--green-900);
+}
+
+.about-text p{
+  margin:0;
+  color: rgba(0,0,0,0.72);
+  line-height: 1.7;
+}
+
+.about-image img{
+  width: 100%;
+  height: 260px;         /* fixed nice size */
+  object-fit: cover;     /* always proportional */
+  border-radius: 16px;
+  box-shadow: 0 12px 28px rgba(0,0,0,0.10);
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+.siteFooter{
+  background: var(--green-900);
+  color: rgba(255,255,255,0.88);
+  padding: 34px 20px;
+  margin-top: 60px;
+  border-top: 1px solid rgba(255,255,255,0.10);
+}
+
+.footerContent{
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.footerLeft h4{ margin: 0 0 10px 0; }
+.footerLeft p, .footerCenter p{
+  font-size: 14px;
+  opacity: 0.85;
+  margin: 0;
+}
+
+.backToTop{
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.35);
+  color: rgba(255,255,255,0.92);
+  padding: 8px 14px;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.backToTop:hover{
+  background: rgba(255,255,255,0.10);
+}
+
+@media (max-width: 768px){
+  .footerContent{
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+  }
+}
+
+/* ===========================
+       Admin Panel
+=========================== */
+/* Общие стили */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f5f5e8; /* бежевый фон */
+  color: #2d2d2d;
+}
+
+/* Админ панель */
+.adminPanel {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Сайдбар */
+.adminSidebar {
+  background-color: #4caf4f; /* зелёный */
+  color: #fff;
+  width: 220px;
+  padding: 20px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.adminSidebar h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 24px;
+  text-align: center;
+}
+
+.adminSidebar a {
+  color: #e8f5e9; /* светлый зеленый */
+  text-decoration: none;
+  margin: 10px 0;
+  padding: 8px;
+  border-radius: 5px;
+  transition: background 0.2s;
+}
+
+.adminSidebar a.active,
+.adminSidebar a:hover {
+  background-color: #a5d6a7; /* мягкий зеленый при наведении */
+  color: #1b5e20;
+}
+
+/* Контент */
+.adminContent {
+  flex: 1;
+  padding: 20px;
+  background-color: #f5f5e8; /* бежевый */
+}
+
+/* Таблицы */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+th, td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ccc;
+}
+
+th {
+  background-color: #dcedc8; /* светлый зеленый */
+}
+
+tr:hover {
+  background-color: #e8f5e9; /* мягкий зеленый */
+}
+
+/* Кнопки */
+button, .btnAdd, input[type="submit"] {
+  background-color: #4caf4f;
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+button:hover, .btnAdd:hover, input[type="submit"]:hover {
+  background-color: #388e3c;
+}
+
+/* Формы */
+input, select, textarea {
+  display: block;
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+textarea {
+  min-height: 100px;
+}
+
+/* Превью изображений */
+.imagePreviews {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.previewImg {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+/* Ошибки */
+.errorBox, .error {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .adminPanel {
+    flex-direction: column;
+  }
+
+  .adminSidebar {
+    width: 100%;
+    flex-direction: row;
+    overflow-x: auto;
+  }
+
+  .adminSidebar a {
+    flex: 1 0 auto;
+    text-align: center;
+    margin: 5px;
+  }
+}
+
+
+
+/* ===========================
+   AddProduct / Admin Panel
+=========================== */
+.adminPanel{
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 24px;
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.adminPanel h2{
+  margin-top:0;
+  margin-bottom:20px;
+  font-size: 28px;
+  color: var(--green-900);
+}
+
+.adminPanel form{
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+}
+
+.adminPanel input,
+.adminPanel select,
+.adminPanel textarea{
+  padding:12px 14px;
+  border:1px solid var(--border);
+  border-radius: 12px;
+  font-size:16px;
+  color: var(--text);
+  background: #fff;
+  transition: 0.2s;
+}
+
+.adminPanel input:focus,
+.adminPanel select:focus,
+.adminPanel textarea:focus{
+  outline:none;
+  border-color: var(--green-600);
+  box-shadow: 0 0 0 3px rgba(31,138,76,0.2);
+}
+
+.adminPanel textarea{
+  resize: vertical;
+  min-height: 100px;
+}
+
+label{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-weight:600;
+  color: var(--muted);
+}
+
+.adminPanel button{
+  padding: 12px 20px;
+  border:none;
+  background: var(--green-600);
+  color:white;
+  font-weight:600;
+  border-radius: 20px;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.adminPanel button:hover{
+  background: var(--green-800);
+}
+
+
+.actionsCell {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.editBtn {
+  display: inline-block;
+  padding: 6px 12px;
+  background: #4caf4f;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+}
+
+.editBtn:hover {
+  background: #388e3c;
+}
+
+.deleteBtn {
+  background: #e25b56;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.deleteBtn:hover {
+  background: #c9443f;
+}
+
+.adminTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+  background: #fff;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.adminTable th {
+  background: #dcedc8;
+  color: #2d2d2d;
+  text-align: left;
+  padding: 12px;
+}
+
+.adminTable td {
+  text-align: left;
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+}
+
+.adminTable tr:hover {
+  background: #f1f8ec;
+}
+
+.viewLink {
+  color: #1b5e20;
+  text-decoration: underline;
+}
+
+.viewLink:hover {
+  color: #388e3c;
+}
+
+/* =========================
+   LOGIN FORM
+========================= */
+
+.loginCard {
+  max-width: 720px;
+  margin: 40px auto;
+  padding: 46px 40px;
+  background: #f8f8f8;
+  border-radius: 22px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.loginTitle {
+  margin: 0 0 28px 0;
+  font-size: 24px;
+  color: #1f2937;
+}
+
+.loginField {
+  margin-bottom: 22px;
+}
+
+.loginField label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.loginField input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid #cbd5e1;
+  border-radius: 14px;
+  background: #eef3fb;
+  font-size: 16px;
+  transition: 0.2s;
+}
+
+.loginField input:focus {
+  outline: none;
+  border-color: #4caf4f;
+  box-shadow: 0 0 0 3px rgba(76, 175, 79, 0.15);
+  background: #ffffff;
+}
+
+.loginActions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-top: 10px;
+  margin-bottom: 28px;
+}
+
+.cancelButton {
+  display: inline-block;
+  background: #cf4436;
+  color: white;
+  text-decoration: none;
+  padding: 10px 18px;
+  border-radius: 12px;
+  font-weight: 600;
+}
+
+.cancelButton:hover {
+  background: #b93629;
+}
+
+.authHint {
+  padding-top: 18px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.authHintText {
+  margin: 0 0 10px 0;
+  color: #374151;
+  line-height: 1.6;
+}
+
+.authHintLink {
+  display: inline-block;
+  margin-bottom: 16px;
+  color: #1f5f2c;
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.authHintSmall {
+  margin: 0 0 16px 0;
+  color: #6b7280;
+  line-height: 1.5;
+}
+
+.guestCheckoutButton {
+  display: inline-block;
+  background: #1f8a4c;
+  color: white;
+  text-decoration: none;
+  padding: 12px 18px;
+  border-radius: 14px;
+  font-weight: 700;
+}
+
+.guestCheckoutButton:hover {
+  background: #16683a;
+}
+
+
+/* =========================
+   PAYMENT PAGE
+========================= */
+
+.paymentPage{
+  min-height: 70vh;
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.paymentContainer{
+  width: 100%;
+  max-width: 700px;
+}
+
+.paymentTitle{
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+.paymentBackLink{
+  display: inline-block;
+  margin-bottom: 20px;
+  color: #1f8a4c;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.paymentBackLink:hover{
+  text-decoration: underline;
+}
+
+.paymentCard{
+  background: white;
+  padding: 35px;
+  border-radius: 16px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+}
+
+.paymentText{
+  font-size: 16px;
+  margin-bottom: 25px;
+}
+
+.paymentSummary{
+  display: flex;
+  justify-content: space-between;
+  font-size: 18px;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.paypalButton{
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  border: none;
+  background: #ffc439;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.paypalButton:hover{
+  background: #f4b932;
+}
+
+/* Image Previews */
+.imagePreviews{
+  display:flex;
+  flex-wrap: wrap;
+  gap:10px;
+  margin-top:10px;
+}
+
+.previewImg{
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 12px;
+  border:1px solid var(--border);
+  box-shadow: var(--shadow);
+}
 /* =========================
    HEADER / NAV
 ========================= */
@@ -118,180 +786,8 @@ a{ color: inherit; }
 }
 
 
-/* =========================
-   FOOTER
-========================= */
-
-.siteFooter{
-  background: var(--green-900);
-  color: rgba(255,255,255,0.88);
-  padding: 34px 20px;
-  margin-top: 60px;
-  border-top: 1px solid rgba(255,255,255,0.10);
-}
-
-.footerContent{
-  max-width: 1100px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-
-.footerLeft h4{ margin: 0 0 10px 0; }
-.footerLeft p, .footerCenter p{
-  font-size: 14px;
-  opacity: 0.85;
-  margin: 0;
-}
-
-.backToTop{
-  background: transparent;
-  border: 1px solid rgba(255,255,255,0.35);
-  color: rgba(255,255,255,0.92);
-  padding: 8px 14px;
-  border-radius: 12px;
-  cursor: pointer;
-}
-
-.backToTop:hover{
-  background: rgba(255,255,255,0.10);
-}
-
-@media (max-width: 768px){
-  .footerContent{
-    flex-direction: column;
-    text-align: center;
-    align-items: center;
-  }
-}
 
 
-/* =========================
-   HOME HERO
-========================= */
-
-.homeHero{
-  min-height: 85vh;
-  background-size: cover;
-  background-position: center;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 40px 20px;
-}
-
-.homeHero::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  background: rgba(0,0,0,0.28); /* lighter overlay */
-}
-
-/* smaller, more transparent circle */
-.homeGlassCircle{
-  position: relative;
-  width: 340px;              /* smaller */
-  height: 340px;             /* perfect circle */
-  max-width: 86vw;
-  max-height: 86vw;
-  border-radius: 999px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  padding: 26px;
-
-  background: rgba(255,255,255,0.10);   /* more transparent */
-  border: 1px solid rgba(255,255,255,0.20);
-  backdrop-filter: blur(12px);
-
-  color: #fff;
-  box-shadow: 0 18px 45px rgba(0,0,0,0.25);
-}
-
-.homeGlassCircle h1{
-  font-size: 30px;
-  margin: 0 0 10px 0;
-  line-height: 1.12;
-}
-
-.homeGlassCircle p{
-  font-size: 14px;
-  opacity: 0.92;
-  margin: 0;
-  max-width: 240px;
-}
-
-@media (max-width: 480px){
-  .homeGlassCircle h1{ font-size: 28px; }
-}
-
-.about-container{
-  background: var(--cream);
-  padding: 40px 20px;
-}
-
-.about-wrap{
-  max-width: 1100px;
-  margin: 0 auto;
-}
-
-.about-head{
-  text-align:center;
-  margin-bottom: 26px;
-}
-
-.about-head h1{
-  margin: 0 0 10px 0;
-  font-size: 34px;
-}
-
-.about-head p{
-  margin:0 auto;
-  max-width: 760px;
-  color: var(--muted);
-  line-height: 1.7;
-}
-
-.about-section{
-  display: grid;
-  grid-template-columns: 1.05fr 0.95fr; /* text a bit wider */
-  align-items: center;
-  gap: 28px;
-  margin: 22px 0;
-  padding: 18px;
-  background: rgba(255,255,255,0.75);
-  border: 1px solid rgba(0,0,0,0.06);
-  border-radius: 18px;
-}
-
-.about-section.reverse{
-  grid-template-columns: 0.95fr 1.05fr;
-}
-
-.about-text h2{
-  margin: 0 0 10px 0;
-  font-size: 24px;
-  color: var(--green-900);
-}
-
-.about-text p{
-  margin:0;
-  color: rgba(0,0,0,0.72);
-  line-height: 1.7;
-}
-
-.about-image img{
-  width: 100%;
-  height: 260px;         /* fixed nice size */
-  object-fit: cover;     /* always proportional */
-  border-radius: 16px;
-  box-shadow: 0 12px 28px rgba(0,0,0,0.10);
-}
 
 .storeMenu{
   display:flex;
@@ -325,39 +821,6 @@ a{ color: inherit; }
   border-color: rgba(39,174,96,0.55);
 }
 
-/* BRAND */
-
-
-.brandWrap{ 
-    display:flex; 
-    align-items:center; 
-    gap:10px; 
-} 
-.brandLogo{ 
-    width:34px; 
-    height:34px; 
-    display:flex; 
-    align-items:center; 
-    justify-content:center; 
-    border-radius:8px; 
-    background:#2e7d32; 
-    color:white; 
-    font-weight:700; 
-    font-size:14px; 
-} 
-.brandText{ 
-    font-weight:700; 
-    color:white; 
-    font-size:16px; 
-}
-.success-message{
-    margin:10px 0;
-    padding:10px;
-    border:1px solid #27ae60;
-    border-radius:6px;
-    background:#e9f8ee;
-    color:#27ae60;
-}
 
 
 /* =========================
@@ -648,34 +1111,7 @@ a{ color: inherit; }
     padding: 30px;
 }
 
-/* form style */
 
-.form-container
-{
-    max-width: 500px;
-}
-
-.form-container input
-{
-    width: 100%;
-    padding: 8px;
-    margin: 6px 0 12px 0;
-}
-
-.form-container button
-{
-    padding: 10px 16px;
-    background: #2a7a5e;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-}
-
-.form-container button:hover
-{
-    background: #21634c;
-}
 
 /* PROFILE */
 
@@ -889,112 +1325,8 @@ box-shadow:0 4px 15px rgba(0,0,0,0.05);
     color: white;
     box-shadow: 0 3px 8px rgba(0,0,0,0.2);
 }
-/* =====================
-   Admin Panel General
-===================== */
-.adminPanel {
-  display: flex;
-  min-height: 100vh;
-  font-family: Arial, sans-serif;
-  background: #f4f6f8;
-  color: #333;
-}
 
-/* =====================
-   Sidebar
-===================== */
-.adminSidebar {
-  width: 220px;
-  background: #1e1e2f;
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-}
 
-.adminSidebar h2 {
-  margin-bottom: 20px;
-  font-size: 1.5rem;
-}
-
-.adminSidebar a {
-  text-decoration: none;
-  color: #bbb;
-  margin: 8px 0;
-  padding: 8px;
-  border-radius: 4px;
-  transition: 0.2s;
-}
-
-.adminSidebar a.activeLink,
-.adminSidebar a:hover {
-  background: #3a3a5e;
-  color: #fff;
-}
-
-/* =====================
-   Admin Content
-===================== */
-.adminContent {
-  flex: 1;
-  padding: 20px;
-  overflow-x: auto;
-}
-
-/* =====================
-   Tables
-===================== */
-.adminContent table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 15px;
-  background: #fff;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-.adminContent th, 
-.adminContent td {
-  text-align: left;
-  padding: 12px;
-  border-bottom: 1px solid #ddd;
-}
-
-.adminContent th {
-  background: #3a3a5e;
-  color: #fff;
-}
-
-.adminContent tr:hover {
-  background: #f1f1f1;
-}
-
-.adminContent button {
-  padding: 5px 10px;
-  margin-left: 5px;
-  background: #d9534f;
-  border: none;
-  color: #fff;
-  border-radius: 3px;
-  cursor: pointer;
-}
-
-.adminContent button:hover {
-  background: #c9302c;
-}
-
-.adminContent .btnAdd {
-  display: inline-block;
-  margin-left: 10px;
-  padding: 6px 12px;
-  background: #5cb85c;
-  color: #fff;
-  text-decoration: none;
-  border-radius: 3px;
-}
-
-.adminContent .btnAdd:hover {
-  background: #4cae4c;
-}
 
 /* =====================
    Forms
@@ -1065,34 +1397,9 @@ box-shadow:0 4px 15px rgba(0,0,0,0.05);
   margin-bottom: 10px;
 }
 
-/* =====================
-   Responsive Design
-===================== */
-@media (max-width: 768px) {
-  .adminPanel {
-    flex-direction: column;
-  }
 
-  .adminSidebar {
-    width: 100%;
-    flex-direction: row;
-    overflow-x: auto;
-  }
 
-  .adminSidebar a {
-    margin: 0 10px;
-  }
-
-  .adminContent {
-    padding: 10px;
-  }
-
-  /* Cards for mobile */
-  .productsAdminList table,
-  .customersDashboard table,
-  .purchasesDashboard table {
-    display: none;
-  }
+  
 
   .cardContainer {
     display: flex;
@@ -1114,7 +1421,7 @@ box-shadow:0 4px 15px rgba(0,0,0,0.05);
   .card p {
     margin: 2px 0;
   }
-}
+
 
 
 /* =========================
@@ -1142,25 +1449,13 @@ box-shadow:0 4px 15px rgba(0,0,0,0.05);
   background: rgba(60, 220, 140, 0.18);
 }
 
-.admin-link{
-  border-color: rgba(160, 200, 255, 0.7);
-  background: rgba(160, 200, 255, 0.10);
-}
 
 
 /* =========================
    STORE LAYOUT
 ========================= */
 
-.form-container{
-  max-width: 1100px;
-  margin: 18px auto;
-  padding: 0 14px 10px 14px;
-}
 
-.storeTitle{
-  margin: 10px 0 16px 0;
-}
 
 /* toolbar */
 .toolbar,
@@ -1202,7 +1497,7 @@ input:focus, select:focus{
 }
 
 /* =========================
-   PRODUCT GRID + CARD
+   PRODUCT GRID + CARD IMPORTANT
 ========================= */
 
 /* desktop grid: 4 cards */
@@ -1225,23 +1520,6 @@ input:focus, select:focus{
   .cards-grid, .productGrid{ grid-template-columns: 1fr; }
 }
 
-/* card */
-.product-card,
-.productCard{
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  overflow: hidden;
-  background: var(--card);
-  cursor: pointer;
-  transition: transform 0.12s ease, box-shadow 0.12s ease;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
-}
-
-.product-card:hover,
-.productCard:hover{
-  transform: translateY(-2px);
-  box-shadow: var(--shadow);
-}
 
 /* image area */
 .card-image,
@@ -1471,7 +1749,7 @@ button.link:hover{
 }
 
 .empty{ opacity: 0.8; }
-.gap{ margin-left: 10px; display:inline-block; }
+
 
 /* show/hide blocks (your existing logic) */
 @media (max-width: 600px){

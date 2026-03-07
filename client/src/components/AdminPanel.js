@@ -4,6 +4,7 @@ import {NavLink, Switch, Route} from "react-router-dom"
 import {ProductsAdminList} from "./ProductsAdminList"
 import {CustomersDashboard} from "./CustomersDashboard"
 import {PurchasesDashboard} from "./PurchasesDashboard"
+import {CustomerDetails} from "./CustomerDetails"
 
 export const AdminPanel = () => {
 
@@ -28,6 +29,10 @@ export const AdminPanel = () => {
                     <Route exact path="/admin/products" component={ProductsAdminList}/>
                     <Route exact path="/admin/customers" component={CustomersDashboard}/>
                     <Route exact path="/admin/purchases" component={PurchasesDashboard}/>
+                    
+                    
+                    <Route path="/admin/customers/:id" component={CustomerDetails}/>
+
 
                     <Route path="/admin" component={()=><h3>Select dashboard</h3>} />
 

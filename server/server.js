@@ -1,4 +1,4 @@
-// server/app.js
+// server.js
 
 // ===============================
 // Load environment variables
@@ -49,7 +49,6 @@ app.use(cors({ credentials: true, origin: process.env.LOCAL_HOST }));
 // Serve static files (uploaded images)
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-app.use("/uploads", express.static("uploads"))
 // ===============================
 // Routes
 // ===============================
@@ -58,7 +57,7 @@ app.get("/", (req, res) => res.send("Server works"));
 // Use routers for API endpoints
 app.use("/api/products", productsRouter);
 app.use("/api/users", usersRouter);
-app.use("/purchases", purchasesRouter);
+app.use("/api/purchases", purchasesRouter);
 
 // Paypal
 const paypalRoutes = require("./routes/paypalRoutes")

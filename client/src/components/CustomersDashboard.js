@@ -1,70 +1,73 @@
 import React, {useEffect, useState} from "react"
 import axios from "axios"
-
-const SERVER_HOST = "http://localhost:4000/api"
+import {Link} from "react-router-dom"
+import {SERVER_HOST} from "../config/global_constants"
 
 export const CustomersDashboard = () => {
 
-    const [customers, setCustomers] = useState([])
-    const [search, setSearch] = useState("")
-    const [error, setError] = useState(null)
+const [customers,setCustomers] = useState([])
+const [search,setSearch] = useState("")
+const [error,setError] = useState(null)
 
-    const token = localStorage.getItem("token")
+const token = localStorage.getItem("token")
 
-    useEffect(() => {
 
-    axios.get(`${SERVER_HOST}/api/users`,{
- headers:{Authorization:token}
-})
-        .then(res => {
-            setCustomers(res.data)
-        })
-        .catch(err => {
-            setError("Failed to load customers")
-            console.error(err)
-        })
+useEffect(() => {
+  axios.get(`${SERVER_HOST}/api/users`, {
+    headers: { Authorization: token }
+  })
+  .then(res => setCustomers(res.data))
+  .catch(() => setError("Failed to load customers"))
+}, [token])
 
-    }, [])
+const filtered = customers.filter(c =>
+c.name.toLowerCase().includes(search.toLowerCase())
+)
 
-    const filtered = customers.filter(c =>
-        c.name.toLowerCase().includes(search.toLowerCase())
-    )
+return(
 
-    return (
-        <div className="customersDashboard">
+<div className="customersDashboard">
 
-            <h2>Customers</h2>
+<h2>Customers</h2>
 
-            {error && <p className="error">{error}</p>}
+{error && <p className="error">{error}</p>}
 
-            <input
-                placeholder="Search..."
-                value={search}
-                onChange={e=>setSearch(e.target.value)}
-            />
+<input
+  placeholder="Search customer..."
+  value={search}
+  onChange={e => setSearch(e.target.value)}
+/>
 
-            <table>
+<table className="adminTable">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Access Level</th>
+      <th>Details</th>
+    </tr>
+  </thead>
 
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Access Level</th>
-                    </tr>
-                </thead>
+  <tbody>
+    {filtered.map(c => (
+      <tr key={c._id}>
+        <td>{c.name}</td>
+        <td>{c.email}</td>
+        <td>{c.accessLevel}</td>
+        <td>
+          <Link to={`/admin/customers/${c._id}`} className="viewLink">
+            View
+          </Link>
+        </td>
+      </tr>
+    ))}
+  </tbody>
+</table>
 
-                <tbody>
-                    {filtered.map(c => (
-                        <tr key={c._id}>
-                            <td>{c.name}</td>
-                            <td>{c.email}</td>
-                            <td>{c.accessLevel}</td>
-                        </tr>
-                    ))}
-                </tbody>
+</div>
 
-            </table>
 
-        </div>
-    )
+
+)
+
 }

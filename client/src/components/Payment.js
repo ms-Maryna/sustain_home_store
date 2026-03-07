@@ -51,25 +51,30 @@ if(!purchaseId || !total)
         }
     }
 
-    return (
-        <div className="paymentPage">
+   return (
+    <div className="paymentPage">
 
-            <h2>Payment</h2>
+        <div className="paymentContainer">
 
-            <NavLink to="/home" className="nav-link">
-                Home
+            <h2 className="paymentTitle">Payment</h2>
+
+            <NavLink to="/products" className="paymentBackLink">
+                ← Back to Store
             </NavLink>
 
             <div className="paymentCard">
 
-              
-
-                <p>
-                    Complete your purchase using PayPal secure payment.
+                <p className="paymentText">
+                    Complete your purchase using secure PayPal payment.
                 </p>
 
+                <div className="paymentSummary">
+                    <span>Total:</span>
+                    <strong>€{total}</strong>
+                </div>
+
                 <button
-                    className="green-button"
+                    className="paypalButton"
                     onClick={handlePayPal}
                 >
                     Pay with PayPal
@@ -78,5 +83,7 @@ if(!purchaseId || !total)
             </div>
 
         </div>
-    )
+
+    </div>
+)
 }

@@ -71,7 +71,7 @@ export const Checkout = props =>
             total: getTotal()
         }
 
-        axios.post(`${SERVER_HOST}/purchases/guest`, purchaseObject)
+        axios.post(`${SERVER_HOST}/api/purchases/guest`, purchaseObject)
         .then(res =>
         {
             // save purchase id for payment page

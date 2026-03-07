@@ -3,100 +3,118 @@ import axios from "axios";
 import { SERVER_HOST } from "../config/global_constants";
 
 export const EditProduct = (props) => {
-
   const productId = props.match.params.id;
 
-  const [name,setName] = useState("");
-  const [category,setCategory] = useState("");
-  const [price,setPrice] = useState("");
-  const [stock,setStock] = useState("");
-  const [powerUsage,setPowerUsage] = useState("");
-  const [energyRating,setEnergyRating] = useState("A");
-  const [condition,setCondition] = useState("new");
-  const [ecoCertified,setEcoCertified] = useState(true);
-  const [error,setError] = useState("");
+  // State for product fields
+  const [name, setName] = useState("");
+  const [category, setCategory] = useState("");
+  const [brand, setBrand] = useState("");
+  const [price, setPrice] = useState("");
+  const [stock, setStock] = useState("");
+  const [powerUsage, setPowerUsage] = useState("");
+  const [energyRating, setEnergyRating] = useState("A");
+  const [condition, setCondition] = useState("new"); // must be lowercase for DB enum
+  const [ecoCertified, setEcoCertified] = useState(true);
+  const [description, setDescription] = useState("");
+  const [images, setImages] = useState([]); // new images to upload
+  const [error, setError] = useState("");
 
-  useEffect(()=>{
-
+  // Fetch product data on mount
+  useEffect(() => {
     axios.get(`${SERVER_HOST}/api/products/${productId}`)
-    .then(res=>{
-      const p = res.data;
+      .then(res => {
+        const p = res.data;
+        setName(p.name);
+        setCategory(p.category);
+        setBrand(p.brand);
+        setPrice(p.price);
+        setStock(p.stock);
+        setPowerUsage(p.powerUsage);
+        setEnergyRating(p.energyRating);
+        setCondition(p.condition); // already lowercase from DB
+        setEcoCertified(p.ecoCertified);
+        setDescription(p.description);
+      })
+      .catch(() => setError("Failed to load product"));
+  }, [productId]);
 
-      setName(p.name);
-      setCategory(p.category);
-      setPrice(p.price);
-      setStock(p.stock);
-      setPowerUsage(p.powerUsage);
-      setEnergyRating(p.energyRating);
-      setCondition(p.condition);
-      setEcoCertified(p.ecoCertified);
-    })
-    .catch(()=>{
-      setError("Failed to load product");
-    })
+  // Handle new image selection
+  const handleFilesChange = (e) => setImages(Array.from(e.target.files));
 
-  },[productId])
-
-  const handleSubmit = async (e)=>{
-
+  // Handle form submission
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try{
-
+    try {
       const token = localStorage.getItem("token");
 
-      await axios.put(`${SERVER_HOST}/api/products/${productId}`,{
+      // Use FormData to support file upload
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("category", category);
+      formData.append("brand", brand);
+      formData.append("price", Number(price)); // ensure number
+      formData.append("stock", Number(stock));
+      formData.append("powerUsage", Number(powerUsage));
+      formData.append("energyRating", energyRating);
+      formData.append("condition", condition);
+      formData.append("ecoCertified", ecoCertified); // boolean
+      formData.append("description", description);
 
-        name,
-        category,
-        price,
-        stock,
-        powerUsage,
-        energyRating,
-        condition,
-        ecoCertified
+      // Append new images if selected
+      images.forEach(img => formData.append("images", img));
 
-      },{
-        headers:{
-          Authorization: token
-        }
-      })
+      // Send PUT request to server
+      await axios.put(`${SERVER_HOST}/api/products/${productId}`, formData, {
+        headers: { 
+          Authorization: token, 
+          "Content-Type": "multipart/form-data" 
+        },
+      });
 
-      props.history.push("/products")
-
+      // Redirect to products list
+     props.history.push("/admin/products");
+    } catch (err) {
+      setError(err.response?.data?.message || "Update failed");
     }
-    catch(err){
-      setError(err.response?.data?.message || "Update failed")
-    }
+  };
 
-  }
-
-  return(
-
+  return (
     <div className="adminPanel">
-
       <h2>Edit Product</h2>
+      {error && <div className="errorBox">{error}</div>}
 
-      {error && <div>{error}</div>}
+      <form onSubmit={handleSubmit} encType="multipart/form-data">
+        <input placeholder="Name" value={name} onChange={e => setName(e.target.value)} required />
+        <input placeholder="Category" value={category} onChange={e => setCategory(e.target.value)} required />
+        <input placeholder="Brand" value={brand} onChange={e => setBrand(e.target.value)} required />
+        <input type="number" placeholder="Price" value={price} onChange={e => setPrice(e.target.value)} required />
+        <input type="number" placeholder="Stock" value={stock} onChange={e => setStock(e.target.value)} required />
+        <input type="number" placeholder="Power Usage" value={powerUsage} onChange={e => setPowerUsage(e.target.value)} />
+        <input placeholder="Energy Rating" value={energyRating} onChange={e => setEnergyRating(e.target.value)} />
+        
+        <select value={condition} onChange={e => setCondition(e.target.value)}>
+          {["new", "used", "refurbished"].map(c => (
+            <option key={c} value={c}>
+              {c.charAt(0).toUpperCase() + c.slice(1)}
+            </option>
+          ))}
+        </select>
 
-      <form onSubmit={handleSubmit}>
+        <label>
+          Eco Certified:
+          <input type="checkbox" checked={ecoCertified} onChange={e => setEcoCertified(e.target.checked)} />
+        </label>
 
-        <input value={name} onChange={e=>setName(e.target.value)} />
+        <textarea placeholder="Description" value={description} onChange={e => setDescription(e.target.value)} required />
 
-        <input value={category} onChange={e=>setCategory(e.target.value)} />
+        <label>
+          Upload New Images (optional):
+          <input type="file" multiple accept="image/*" onChange={handleFilesChange} />
+        </label>
 
-        <input type="number" value={price} onChange={e=>setPrice(e.target.value)} />
-
-        <input type="number" value={stock} onChange={e=>setStock(e.target.value)} />
-
-        <button type="submit">
-          Update Product
-        </button>
-
+        <button type="submit">Update Product</button>
       </form>
-
     </div>
-
-  )
-
-}
+  );
+};

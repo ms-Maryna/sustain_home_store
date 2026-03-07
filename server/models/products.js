@@ -8,7 +8,7 @@ const productsSchema = new mongoose.Schema(
     stock: {type: Number, required: true, min: 0, max: 10000},
     energyRating: {type: String, required: true, enum: ["A","B","C","D","E","F","G"]},
     brand: {type: String, required: true},
-    condition: {type: String, required: true, enum: ["new","used","refurbished"]},
+    condition: {type: String, required: true},
     powerUsage: {type: Number, required: true, min: 0, max: 5000},
     ecoCertified: {type: Boolean, required: true},
     images: {type: [String], required: true},
