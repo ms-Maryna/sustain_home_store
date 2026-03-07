@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react"
 import axios from "axios"
 import {Link} from "react-router-dom"
+import { SERVER_HOST } from "../config/global_constants"
 
 export const ProductsAdminList = () => {
     const [products, setProducts] = useState([])
@@ -17,7 +18,8 @@ export const ProductsAdminList = () => {
 
     const fetchProducts = async () => {
         try {
-            const res = await axios.get("/api/products", { headers: { Authorization: token }})
+            
+            const res = await axios.get(`${SERVER_HOST}/api/products`){ headers: { Authorization: token }})
             setProducts(res.data)
         } catch (err) {
             setError("Failed to load products")

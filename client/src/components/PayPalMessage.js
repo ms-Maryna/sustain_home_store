@@ -5,11 +5,17 @@ export const PayPalMessage = props =>
 {
     const [heading, setHeading] = useState("")
     const [message, setMessage] = useState("")
+    const [paymentID, setPaymentID] = useState("")
     const [buttonColour, setButtonColour] = useState("red-button")
 
     useEffect(() =>
     {
         const type = props.match.params.messageType
+
+        const params = new URLSearchParams(window.location.search)
+        const token = params.get("token")
+
+        setPaymentID(token)
 
         if(type === "SUCCESS")
         {
@@ -27,20 +33,28 @@ export const PayPalMessage = props =>
             setHeading("PayPal Transaction Error")
             setMessage("An error occurred. Please try again.")
         }
-    }, [props.match.params.messageType])
+
+    }, [])
 
     return (
         <div className="payPalMessage">
             <h3>{heading}</h3>
             <p>{message}</p>
 
-            {props.match.params.messageType === "SUCCESS"
-                ? <p>Your PayPal payment confirmation is <span id="payPalPaymentID">{props.match.params.payPalPaymentID}</span></p>
-                : null}
+            {paymentID &&
+                <p>
+                    Payment ID: <b>{paymentID}</b>
+                </p>
+            }
 
-            <p id="payPalPaymentIDButton">
-                <Link className={buttonColour} to={"/products"}>Continue</Link>
+            <p>
+                <Link className={buttonColour} to="/products">
+                    Continue
+                </Link>
             </p>
         </div>
     )
 }
+//for test Paypal
+//Email - sb-432yyi48480876@business.example.com
+//Password - Mg?F3A!H

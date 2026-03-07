@@ -50,7 +50,7 @@ export const Login = props => {
 
             {isLoggedIn && <Redirect to="/products" />}
 
-            {/* Отображаем только строку */}
+            
             {errorMessage && <div className="error-message">{errorMessage}</div>}
 
             <input
@@ -85,6 +85,11 @@ export const Login = props => {
                 <p className="authHintSmall">
                     Guest customers can still order online without registering.
                 </p>
+                <p>Guest customers can still order online without registering.</p>
+
+                <Link className="green-button" to="/checkout">
+                Checkout as Guest
+                </Link>
             </div>
         </form>
     )

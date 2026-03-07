@@ -13,9 +13,9 @@ export const CustomersDashboard = () => {
 
     useEffect(() => {
 
-        axios.get(`${SERVER_HOST}/users/customers`, {
-            headers:{Authorization: token}
-        })
+    axios.get(`${SERVER_HOST}/api/users`,{
+ headers:{Authorization:token}
+})
         .then(res => {
             setCustomers(res.data)
         })

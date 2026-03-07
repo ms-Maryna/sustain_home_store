@@ -98,6 +98,7 @@ a{ color: inherit; }
 }
 .navButton:hover{ background:#ece3d2; }
 
+
 @media (max-width: 600px){
   .burger{ display:block; margin-left:auto; }
   .navLinks{
@@ -586,6 +587,307 @@ a{ color: inherit; }
 
 #payPalPaymentIDButton{
   margin-top:18px;
+}
+
+
+/* ======================
+   CUSTOMER DASHBOARD
+====================== */
+
+.customerDashboard
+{
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    min-height: 70vh;
+}
+
+/* sidebar */
+
+.customerSidebar
+{
+    background: #f6f8f7;
+    padding: 20px;
+    border-right: 1px solid #ddd;
+
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.customerSidebar h2
+{
+    margin-bottom: 10px;
+}
+
+.customerSidebar a
+{
+    text-decoration: none;
+    color: #333;
+    padding: 8px 10px;
+    border-radius: 6px;
+    transition: background 0.2s;
+}
+
+.customerSidebar a:hover
+{
+    background: #e6f2ee;
+}
+
+/* active link */
+
+.activeLink
+{
+    background: #d4efe4;
+    font-weight: bold;
+}
+
+/* content */
+
+.customerContent
+{
+    padding: 30px;
+}
+
+/* form style */
+
+.form-container
+{
+    max-width: 500px;
+}
+
+.form-container input
+{
+    width: 100%;
+    padding: 8px;
+    margin: 6px 0 12px 0;
+}
+
+.form-container button
+{
+    padding: 10px 16px;
+    background: #2a7a5e;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.form-container button:hover
+{
+    background: #21634c;
+}
+
+/* PROFILE */
+
+.profileCard
+{
+    display:flex;
+    gap:40px;
+    background:white;
+    padding:30px;
+    border-radius:12px;
+    box-shadow:0 2px 6px rgba(0,0,0,0.08);
+}
+
+.profilePhoto
+{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:10px;
+}
+
+.profilePhoto img
+{
+    width:140px;
+    height:140px;
+    border-radius:50%;
+    object-fit:cover;
+}
+
+.noPhoto
+{
+    width:140px;
+    height:140px;
+    border-radius:50%;
+    background:#eee;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.profileForm
+{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+}
+
+.profileForm input
+{
+    padding:8px;
+    margin-bottom:14px;
+}
+
+.profileForm button
+{
+    width:160px;
+}
+
+
+/* PURCHASE HISTORY */
+
+.purchaseGrid
+{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+    gap:20px;
+}
+
+.purchaseCard
+{
+    background:white;
+    border-radius:12px;
+    padding:18px;
+    box-shadow:0 2px 6px rgba(0,0,0,0.08);
+}
+
+.purchaseHeader
+{
+    font-weight:bold;
+    margin-bottom:10px;
+}
+
+.purchaseItem
+{
+    display:flex;
+    gap:12px;
+    margin-bottom:10px;
+}
+
+.purchaseItem img
+{
+    width:60px;
+    height:60px;
+    object-fit:cover;
+    border-radius:6px;
+}
+
+.purchaseFooter
+{
+    margin-top:10px;
+    font-weight:bold;
+}
+
+.dashboardContainer{
+max-width:1200px;
+margin:auto;
+padding:40px 20px;
+}
+
+.dashboardTitle{
+font-size:28px;
+font-weight:700;
+margin-bottom:30px;
+color:#0f5132;
+}
+
+.dashboardLayout{
+display:flex;
+gap:30px;
+}
+
+.dashboardSidebar{
+width:220px;
+display:flex;
+flex-direction:column;
+gap:12px;
+}
+
+.dashboardMenu{
+    display:flex;
+    gap:15px;
+    margin:20px 0;
+    padding-bottom:10px;
+    border-bottom:1px solid #e0e0e0;
+}
+.dashboardMenu a{
+    text-decoration:none;
+    padding:10px 20px;
+    border-radius:20px;
+    font-weight:500;
+    color:#0c3b2e;
+    background:#f3f5f4;
+    transition:all 0.25s ease;
+}
+.dashboardMenu a:hover{
+    background:#1e7a57;
+    color:white;
+    transform:translateY(-1px);
+}
+
+.dashboardMenu a.active{
+    background:#1e7a57;
+    color:white;
+    box-shadow:0 3px 8px rgba(0,0,0,0.1);
+}
+
+.dashboardLink{
+padding:12px 16px;
+border-radius:10px;
+background:#f5f5f5;
+text-decoration:none;
+font-weight:500;
+color:#333;
+transition:0.2s;
+}
+
+.dashboardLink:hover{
+background:#e8f5e9;
+}
+
+.dashboardLink.active{
+background:#198754;
+color:white;
+}
+
+.dashboardContent{
+flex:1;
+background:white;
+padding:25px;
+border-radius:12px;
+box-shadow:0 4px 15px rgba(0,0,0,0.05);
+}
+
+.dashboardNav
+{
+    display: flex;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.dashboardNav a
+{
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 20px;
+    background: #e5e5e5;
+    color: #1b3d2f;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.dashboardNav a:hover
+{
+    background: #1b6f43;
+    color: white;
+}
+
+.dashboardNav a.active
+{
+    background: #1b6f43;
+    color: white;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.2);
 }
 /* =====================
    Admin Panel General

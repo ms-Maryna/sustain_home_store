@@ -19,4 +19,10 @@ router.post("/guest", (req, res) =>
     res.json(purchase)
 })
 
+// purchase history
+router.get("/my", (req, res) =>
+{
+    res.json(purchases)
+})
+
 module.exports = router

@@ -49,6 +49,7 @@ app.use(cors({ credentials: true, origin: process.env.LOCAL_HOST }));
 // Serve static files (uploaded images)
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
+app.use("/uploads", express.static("uploads"))
 // ===============================
 // Routes
 // ===============================
@@ -58,6 +59,11 @@ app.get("/", (req, res) => res.send("Server works"));
 app.use("/api/products", productsRouter);
 app.use("/api/users", usersRouter);
 app.use("/purchases", purchasesRouter);
+
+// Paypal
+const paypalRoutes = require("./routes/paypalRoutes")
+
+app.use("/api/paypal", paypalRoutes)
 
 // ===============================
 // Catch 404 errors

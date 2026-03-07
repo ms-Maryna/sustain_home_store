@@ -140,7 +140,7 @@ router.put("/profile", multerMiddleware.uploadProfileImage.single("profileImage"
             res.json(user);
         })
         .catch(err => next(err));
-    });
+    })
 });
 
 module.exports = router;

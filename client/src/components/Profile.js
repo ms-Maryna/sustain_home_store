@@ -4,53 +4,44 @@ import {SERVER_HOST} from "../config/global_constants"
 
 export const Profile = () =>
 {
-    const [name, setName] = useState("")
-    const [email, setEmail] = useState("")
-    const [phone, setPhone] = useState("")
-    const [address, setAddress] = useState("")
-    const [profileImage, setProfileImage] = useState(null)
+    const [user, setUser] = useState({})
+    const [image, setImage] = useState(null)
     const [preview, setPreview] = useState("")
 
-    const [errorMessage, setErrorMessage] = useState("")
-    const [successMessage, setSuccessMessage] = useState("")
+    const [error, setError] = useState("")
+    const [success, setSuccess] = useState("")
 
-    // load user profile
     useEffect(() =>
     {
-        axios.get(`${SERVER_HOST}/users/profile`,
+        axios.get(`${SERVER_HOST}/api/users/profile`,
         {
-            headers: {authorization: localStorage.token}
+            headers:{authorization:localStorage.token}
         })
         .then(res =>
         {
-            setName(res.data.name)
-            setEmail(res.data.email)
-            setPhone(res.data.phone || "")
-            setAddress(res.data.address || "")
+            setUser(res.data)
 
-            if(res.data.image)
+            if(res.data.profileImage)
             {
-                setPreview(`${SERVER_HOST}/uploads/${res.data.image}`)
+                setPreview(`${SERVER_HOST}/uploads/${res.data.profileImage}`)
             }
         })
-        .catch(err =>
-        {
-            if(err.response)
-            {
-                setErrorMessage(err.response.data)
-            }
-        })
-
-    }, [])
+    },[])
 
 
-    const handleImageChange = e =>
+    const handleChange = e =>
+    {
+        setUser({...user,[e.target.name]:e.target.value})
+    }
+
+
+    const handleImage = e =>
     {
         const file = e.target.files[0]
 
         if(file)
         {
-            setProfileImage(file)
+            setImage(file)
             setPreview(URL.createObjectURL(file))
         }
     }
@@ -60,109 +51,100 @@ export const Profile = () =>
     {
         e.preventDefault()
 
-        setErrorMessage("")
-        setSuccessMessage("")
-
-        if(name.trim().length < 2)
-        {
-            setErrorMessage("Name must be at least 2 characters")
-            return
-        }
-
         const formData = new FormData()
 
-        formData.append("name", name)
-        formData.append("phone", phone)
-        formData.append("address", address)
+        formData.append("name", user.name)
+        formData.append("phone", user.phone)
+        formData.append("address", user.address)
 
-        if(profileImage)
+        if(image)
         {
-            formData.append("image", profileImage)
+            formData.append("profileImage", image)
         }
 
-        axios.put(`${SERVER_HOST}/users/profile`,
-        formData,
+        axios.put(`${SERVER_HOST}/api/users/profile`, formData,
         {
             headers:
             {
-                authorization: localStorage.token,
-                "Content-Type": "multipart/form-data"
+                authorization:localStorage.token,
+                "Content-Type":"multipart/form-data"
             }
         })
         .then(res =>
         {
-            setSuccessMessage("Profile updated successfully")
+            setSuccess("Profile updated successfully")
         })
         .catch(err =>
         {
-            if(err.response)
-            {
-                setErrorMessage(err.response.data)
-            }
+            setError("Profile update failed")
         })
     }
 
 
-    return (
-        <div className="form-container">
+    return(
+        <div className="profilePage">
 
             <h2>My Profile</h2>
 
-            {errorMessage && <div className="error-message">{errorMessage}</div>}
-            {successMessage && <div className="success-message">{successMessage}</div>}
+            {error && <div className="errorBox">{error}</div>}
+            {success && <div className="successBox">{success}</div>}
 
-            <form onSubmit={handleSubmit}>
+            <div className="profileCard">
 
-                <label>Name</label>
-                <input
-                    type="text"
-                    value={name}
-                    onChange={e => setName(e.target.value)}
-                />
+                <div className="profilePhoto">
 
-                <label>Email</label>
-                <input
-                    type="email"
-                    value={email}
-                    disabled
-                />
+                    {preview ?
+                        <img src={preview} alt="profile"/>
+                        :
+                        <div className="noPhoto">No Photo</div>
+                    }
 
-                <label>Phone</label>
-                <input
-                    type="text"
-                    value={phone}
-                    onChange={e => setPhone(e.target.value)}
-                />
+                    
+                    
+                    <input
+    type="file"
+    name="profileImage"
+    accept="image/png,image/jpeg"
+    onChange={handleImage}
+/>
 
-                <label>Address</label>
-                <input
-                    type="text"
-                    value={address}
-                    onChange={e => setAddress(e.target.value)}
-                />
+                </div>
 
-                <label>Profile Photo</label>
-                <input
-                    type="file"
-                    accept="image/png, image/jpeg"
-                    onChange={handleImageChange}
-                />
 
-                {preview &&
-                    <div style={{marginTop:"10px"}}>
-                        <img
-                            src={preview}
-                            alt="profile preview"
-                            style={{width:"120px", borderRadius:"8px"}}
-                        />
-                    </div>
-                }
+                <form onSubmit={handleSubmit} className="profileForm">
 
-                <br/>
+                    <label>Name</label>
+                    <input
+                        name="name"
+                        value={user.name || ""}
+                        onChange={handleChange}
+                    />
 
-                <button type="submit">Update Profile</button>
+                    <label>Email</label>
+                    <input
+                        value={user.email || ""}
+                        disabled
+                    />
 
-            </form>
+                    <label>Phone</label>
+                    <input
+                        name="phone"
+                        value={user.phone || ""}
+                        onChange={handleChange}
+                    />
+
+                    <label>Address</label>
+                    <input
+                        name="address"
+                        value={user.address || ""}
+                        onChange={handleChange}
+                    />
+
+                    <button>Update Profile</button>
+
+                </form>
+
+            </div>
 
         </div>
     )

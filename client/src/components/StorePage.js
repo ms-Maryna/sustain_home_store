@@ -8,6 +8,7 @@ import {Checkout} from "./Checkout"
 
 import {AddProduct} from "./AddProduct"
 import {EditProduct} from "./EditProduct"
+import {Payment} from "./Payment"
 
 import {AdministratorRoute} from "./AdministratorRoute"
 
@@ -22,9 +23,20 @@ export const StorePage = props =>
                 <Route exact path="/products" component={DisplayAllProducts}/>
                 <Route exact path="/products/cart" component={Cart}/>
                 <Route exact path="/products/checkout" component={Checkout}/>
+                <Route exact path="/products/payment" component={Payment}/>
+                <Route
+    exact
+    path="/products/payment"
+    component={() =>
+        localStorage.getItem("lastPurchaseId")
+        ? <Payment/>
+        : <h3>Please complete checkout first</h3>
+    }
+/>
 
                 <AdministratorRoute exact path="/products/add" component={AddProduct}/>
                 <AdministratorRoute exact path="/products/edit/:id" component={EditProduct}/>
+                
 
                 <Route path="*" component={() => <h3>Invalid Store URL</h3>}/>
             </Switch>

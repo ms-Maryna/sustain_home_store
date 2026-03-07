@@ -25,22 +25,23 @@ import {PurchaseHistory} from "./components/PurchaseHistory"
 import {AdminPanel} from "./components/AdminPanel"
 import {ProductsAdminList} from "./components/ProductsAdminList"
 import {CustomersDashboard} from "./components/CustomersDashboard"
+import {CustomerDashboard} from "./components/CustomerDashboard"
 import {PurchasesDashboard} from "./components/PurchasesDashboard"
 import {Cart} from "./components/Cart"
 import {Checkout} from "./components/Checkout"
 import {Payment} from "./components/Payment"
 
 
+
 import "./css/App.css"
 
 // create default session once (AFTER imports)
-if(typeof localStorage.accessLevel === "undefined")
+if(!localStorage.getItem("accessLevel") || localStorage.getItem("accessLevel") === "undefined")
 {
-    localStorage.name = "GUEST"
-    localStorage.accessLevel = ACCESS_LEVEL_GUEST
-    localStorage.token = ""
+    localStorage.setItem("name", "GUEST")
+    localStorage.setItem("accessLevel", ACCESS_LEVEL_GUEST)
+    localStorage.setItem("token", "")
 }
-
 export const App = props =>
 {
     return (
@@ -59,18 +60,15 @@ export const App = props =>
                     <Route exact path="/register" component={Register}/>
 
                     <LoggedInRoute exact path="/logout" component={Logout}/>
-                    <LoggedInRoute exact path="/profile" component={Profile}/>
-                    <LoggedInRoute exact path="/purchase-history" component={PurchaseHistory}/>
+                    
+                    
+                    <LoggedInRoute path="/account" component={CustomerDashboard}/>
 
                     {/* ADMIN routes */}
 
-                    <AdministratorRoute exact path="/admin" component={AdminPanel}/>
-                    <AdministratorRoute exact path="/admin/products" component={ProductsAdminList}/>
-                    <AdministratorRoute exact path="/admin/customers" component={CustomersDashboard}/>
-                    <AdministratorRoute exact path="/admin/purchases" component={PurchasesDashboard}/>
-
-                    <AdministratorRoute exact path="/products/add" component={AddProduct}/>
-                    <AdministratorRoute exact path="/products/edit/:id" component={EditProduct}/>
+                    <AdministratorRoute  path="/admin" component={AdminPanel}/>
+                  <AdministratorRoute path="/products/add" component={AddProduct}/>
+                    <AdministratorRoute  path="/products/edit/:id" component={EditProduct}/>
 
                     {/* STORE */}
 
@@ -78,10 +76,11 @@ export const App = props =>
                    
 <Route exact path="/cart" component={Cart}/>
 <Route exact path="/payment" component={Payment}/>
-<LoggedInRoute exact path="/checkout" component={Checkout}/>
+
+<Route exact path="/checkout" component={Checkout}/>
 
 
-                    <Route exact path="/PayPalMessage/:messageType/:payPalPaymentID" component={PayPalMessage}/>
+                    <Route path="/paypal/:messageType" component={PayPalMessage}/>
 
                     <Route path="*" component={() => <h3>Invalid URL</h3>}/>
 

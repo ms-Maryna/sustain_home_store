@@ -71,6 +71,7 @@ export const ProductModal = props =>
                                             src={`${SERVER_HOST}/uploads/products/${fn}`}
                                             alt=""
                                             onClick={() => setImgIndex(i)}
+                                            
                                         />
                                     ))}
                                 </div>

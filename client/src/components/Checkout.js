@@ -9,6 +9,7 @@ export const Checkout = props =>
 
     const [name, setName] = useState("")
     const [address, setAddress] = useState("")
+    
     const [phone, setPhone] = useState("")
     const [email, setEmail] = useState("")
 
@@ -75,7 +76,8 @@ export const Checkout = props =>
         {
             // save purchase id for payment page
             localStorage.setItem("lastPurchaseId", res.data._id)
-
+            //paypal
+            localStorage.setItem("cartTotal", getTotal())
             // clear cart
             localStorage.setItem("cart", JSON.stringify([]))
 
@@ -90,7 +92,7 @@ export const Checkout = props =>
 
     return (
         <div className="form-container">
-            {redirectToPayment ? <Redirect to="/payment"/> : null}
+            {redirectToPayment ? <Redirect to="/products/payment"/> : null}
 
             <h3>Checkout</h3>
 

@@ -3,24 +3,23 @@ import {Route, Redirect} from "react-router-dom"
 
 export const AdministratorRoute = ({component:Component, ...rest}) => {
 
-    return (
+    return(
 
         <Route
             {...rest}
+            render={props => {
 
-            render={props =>
+                const accessLevel = parseInt(localStorage.getItem("accessLevel"))
 
-                parseInt(localStorage.accessLevel) === 2 ?
+                if(accessLevel===2){
+                    return <Component {...props}/>
+                }
 
-                <Component {...props}/>
+                return <Redirect to="/login"/>
 
-                :
-
-                <Redirect to="/login"/>
-
-            }
-
+            }}
         />
 
     )
+
 }

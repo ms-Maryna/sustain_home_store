@@ -3,117 +3,100 @@ import axios from "axios";
 import { SERVER_HOST } from "../config/global_constants";
 
 export const EditProduct = (props) => {
-  const productId = props.match.params.id; // React Router v5
-  const [name, setName] = useState("");
-  const [category, setCategory] = useState("");
-  const [price, setPrice] = useState("");
-  const [stock, setStock] = useState("");
-  const [images, setImages] = useState([]);
-  const [error, setError] = useState("");
 
-  useEffect(() => {
-    const fetchProduct = async () => {
-      try {
-        const res = await axios.get(`${SERVER_HOST}/api/products/${productId}`);
-        setName(res.data.name);
-        setCategory(res.data.category);
-        setPrice(res.data.price);
-        setStock(res.data.stock);
-        setImages(res.data.images || []);
-      } catch (err) {
-        setError("Failed to load product data");
-      }
-    };
-    fetchProduct();
-  }, [productId]);
+  const productId = props.match.params.id;
 
-  const handleSubmit = async (e) => {
+  const [name,setName] = useState("");
+  const [category,setCategory] = useState("");
+  const [price,setPrice] = useState("");
+  const [stock,setStock] = useState("");
+  const [powerUsage,setPowerUsage] = useState("");
+  const [energyRating,setEnergyRating] = useState("A");
+  const [condition,setCondition] = useState("new");
+  const [ecoCertified,setEcoCertified] = useState(true);
+  const [error,setError] = useState("");
+
+  useEffect(()=>{
+
+    axios.get(`${SERVER_HOST}/api/products/${productId}`)
+    .then(res=>{
+      const p = res.data;
+
+      setName(p.name);
+      setCategory(p.category);
+      setPrice(p.price);
+      setStock(p.stock);
+      setPowerUsage(p.powerUsage);
+      setEnergyRating(p.energyRating);
+      setCondition(p.condition);
+      setEcoCertified(p.ecoCertified);
+    })
+    .catch(()=>{
+      setError("Failed to load product");
+    })
+
+  },[productId])
+
+  const handleSubmit = async (e)=>{
+
     e.preventDefault();
-    setError(""); // Reset error message
 
-    if (!name || !category || !price || !stock || images.length === 0) {
-      setError("All fields and at least one image are required!");
-      return;
-    }
+    try{
 
-    try {
-      const formData = new FormData();
-      formData.append("name", name);
-      formData.append("category", category);
-      formData.append("price", price);
-      formData.append("stock", stock);
-      images.forEach((img) => formData.append("images", img));
-
-      // Authorization header with JWT token
       const token = localStorage.getItem("token");
 
-      await axios.put(`${SERVER_HOST}/api/products/${productId}`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      await axios.put(`${SERVER_HOST}/api/products/${productId}`,{
 
-      // Redirect to products list page
-      props.history.push("/admin/products");
-    } catch (err) {
-      setError(err.response?.data?.message || "Failed to update product");
+        name,
+        category,
+        price,
+        stock,
+        powerUsage,
+        energyRating,
+        condition,
+        ecoCertified
+
+      },{
+        headers:{
+          Authorization: token
+        }
+      })
+
+      props.history.push("/products")
+
     }
-  };
+    catch(err){
+      setError(err.response?.data?.message || "Update failed")
+    }
 
-  const handleImageUpload = (e) => {
-    const files = Array.from(e.target.files);
-    setImages(files);
-  };
+  }
 
-  return (
+  return(
+
     <div className="adminPanel">
+
       <h2>Edit Product</h2>
-      {error && <div className="errorBox">{error}</div>}
-      <form onSubmit={handleSubmit} className="productForm">
-        <label>
-          Name:
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-        </label>
 
-        <label>
-          Category:
-          <input
-            type="text"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-          />
-        </label>
+      {error && <div>{error}</div>}
 
-        <label>
-          Price (€):
-          <input
-            type="number"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-          />
-        </label>
+      <form onSubmit={handleSubmit}>
 
-        <label>
-          Stock:
-          <input
-            type="number"
-            value={stock}
-            onChange={(e) => setStock(e.target.value)}
-          />
-        </label>
+        <input value={name} onChange={e=>setName(e.target.value)} />
 
-        <label>
-          Images:
-          <input type="file" multiple onChange={handleImageUpload} />
-        </label>
+        <input value={category} onChange={e=>setCategory(e.target.value)} />
 
-        <button type="submit">Update Product</button>
+        <input type="number" value={price} onChange={e=>setPrice(e.target.value)} />
+
+        <input type="number" value={stock} onChange={e=>setStock(e.target.value)} />
+
+        <button type="submit">
+          Update Product
+        </button>
+
       </form>
+
     </div>
-  );
-};
+
+  )
+
+}

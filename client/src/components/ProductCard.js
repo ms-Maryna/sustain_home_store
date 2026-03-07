@@ -38,6 +38,7 @@ export const ProductCard = ({product, onSelect, onAddToCart}) =>
             <div className="productImg">
                 {main ? <img src={main} alt={product.name}/> : <div className="noImg">No image</div>}
             </div>
+            
 
             <div className="productBody">
                 <div className="topRow">

@@ -3,6 +3,8 @@ import {NavLink} from "react-router-dom"
 
 export const StoreMenu = props =>
 {
+    
+    const purchaseId = localStorage.getItem("lastPurchaseId")
     return (
         <div className="storeMenu">
             <NavLink exact to="/products" className="storeLink" activeClassName="storeLinkActive">
@@ -17,9 +19,11 @@ export const StoreMenu = props =>
                 Checkout
             </NavLink>
 
-            <NavLink exact to="/products/payment" className="storeLink" activeClassName="storeLinkActive">
-                Payment
-            </NavLink>
+           {purchaseId &&
+<NavLink exact to="/products/payment" className="storeLink" activeClassName="storeLinkActive">
+    Payment
+</NavLink>
+}
         </div>
     )
 }

@@ -23,6 +23,7 @@ export const Footer = props =>
                 <div className="footerCenter">
                     <p>© 2026 DKIT Group Project</p>
                     <p>Full Stack Development </p>
+                    <p>Support team - 085-123-45-67</p>
                 </div>
 
                 <div className="footerRight">
