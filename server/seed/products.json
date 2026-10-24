@@ -1,223 +1,297 @@
 [
-{
-"name": "Kettle",
-"category": "Kitchen",
-"price": 39,
-"stock": 15,
-"energyRating": "A",
-"brand": "Bosch",
-"condition": "New",
-"powerUsage": 1800,
-"ecoCertified": true,
-"images": ["Kettle1.png", "Kettle2.png", "Kettle3.png", "Kettle4.png"],
-"description": "Electric kettle"
-},
-{
-"name": "Toaster",
-"category": "Kitchen",
-"price": 29,
-"stock": 20,
-"energyRating": "A",
-"brand": "Philips",
-"condition": "New",
-"powerUsage": 800,
-"ecoCertified": true,
-"images": ["Toaster1.png", "Toaster2.png", "Toaster3.png", "Toaster4.png"],
-"description": "Bread toaster"
-},
-{
-"name": "Blender",
-"category": "Kitchen",
-"price": 49,
-"stock": 10,
-"energyRating": "A",
-"brand": "Kenwood",
-"condition": "New",
-"powerUsage": 600,
-"ecoCertified": true,
-"images": ["Blender1.png", "Blender2.png", "Blender3.png", "Blender4.png"],
-"description": "Kitchen blender"
-},
-{
-"name": "Microwave",
-"category": "Kitchen",
-"price": 89,
-"stock": 8,
-"energyRating": "A",
-"brand": "Samsung",
-"condition": "New",
-"powerUsage": 1200,
-"ecoCertified": false,
-"images": ["Microwave1.png", "Microwave2.png", "Microwave3.png", "Microwave4.png"],
-"description": "Microwave oven"
-},
-{
-"name": "Fridge",
-"category": "Kitchen",
-"price": 499,
-"stock": 5,
-"energyRating": "A",
-"brand": "LG",
-"condition": "New",
-"powerUsage": 150,
-"ecoCertified": true,
-"images": ["Fridge1.png", "Fridge2.png", "Fridge3.png"],
-"description": "Refrigerator"
-},
-{
-"name": "Hoover",
-"category": "Cleaning",
-"price": 129,
-"stock": 12,
-"energyRating": "A",
-"brand": "Dyson",
-"condition": "New",
-"powerUsage": 700,
-"ecoCertified": true,
-"images": ["Hoover1.png", "Hoover2.png", "Hoover3.png"],
-"description": "Vacuum cleaner"
-},
-{
-"name": "Mop",
-"category": "Cleaning",
-"price": 25,
-"stock": 30,
-"energyRating": "A",
-"brand": "Vileda",
-"condition": "New",
-"powerUsage": 0,
-"ecoCertified": true,
-"images": ["Mop1.png", "Mop2.png", "Mop3.png"],
-"description": "Floor mop"
-},
-{
-"name": "Steam cleaner",
-"category": "Cleaning",
-"price": 99,
-"stock": 7,
-"energyRating": "A",
-"brand": "Karcher",
-"condition": "New",
-"powerUsage": 1200,
-"ecoCertified": true,
-"images": ["Steam_cleaner1.png", "Steam_cleaner2.png", "Steam_cleaner3.png", "Steam_cleaner4.png"],
-"description": "Steam cleaner"
-},
-{
-"name": "Washing machine",
-"category": "Laundry",
-"price": 549,
-"stock": 4,
-"energyRating": "A",
-"brand": "Bosch",
-"condition": "New",
-"powerUsage": 2000,
-"ecoCertified": true,
-"images": ["Washing_machine1.png", "Washing_machine2.png", "Washing_machine3.png"],
-"description": "Washer"
-},
-{
-"name": "Dryer",
-"category": "Laundry",
-"price": 499,
-"stock": 6,
-"energyRating": "A",
-"brand": "Whirlpool",
-"condition": "New",
-"powerUsage": 2200,
-"ecoCertified": false,
-"images": ["Dryer1.png", "Dryer2.png", "Dryer3.png"],
-"description": "Clothes dryer"
-},
-{
-"name": "Air purifier",
-"category": "Air",
-"price": 149,
-"stock": 9,
-"energyRating": "A",
-"brand": "Xiaomi",
-"condition": "New",
-"powerUsage": 50,
-"ecoCertified": true,
-"images": ["Air_purifier1.png", "Air_purifier2.png","Air_purifier3.png", "Air_purifier4.png"],
-"description": "Air purifier"
-},
-{
-"name": "Dehumidifier",
-"category": "Air",
-"price": 179,
-"stock": 6,
-"energyRating": "A",
-"brand": "Meaco",
-"condition": "New",
-"powerUsage": 250,
-"ecoCertified": true,
-"images": ["Dehumidifier1.png", "Dehumidifier2.png", "Dehumidifier3.png"],
-"description": "Dehumidifier"
-},
-{
-"name": "Fan",
-"category": "Air",
-"price": 59,
-"stock": 15,
-"energyRating": "A",
-"brand": "Honeywell",
-"condition": "New",
-"powerUsage": 45,
-"ecoCertified": true,
-"images": ["Fan1.png", "Fan2.png", "Fan3.png"],
-"description": "Electric fan"
-},
-{
-"name": "Heater",
-"category": "Air",
-"price": 119,
-"stock": 11,
-"energyRating": "A",
-"brand": "Delonghi",
-"condition": "New",
-"powerUsage": 2000,
-"ecoCertified": false,
-"images": ["Heater1.png","Heater2.png","Heater3.png"],
-"description": "Room heater"
-},
-{
-"name": "Solar panel",
-"category": "Energy",
-"price": 799,
-"stock": 3,
-"energyRating": "A",
-"brand": "EcoFlow",
-"condition": "New",
-"powerUsage": 300,
-"ecoCertified": true,
-"images": ["Solar_panel1.png","Solar_panel2.png","Solar_panel3.png"],
-"description": "Solar panel"
-},
-{
-"name": "Smart plug",
-"category": "Energy",
-"price": 19,
-"stock": 40,
-"energyRating": "A",
-"brand": "TPLink",
-"condition": "New",
-"powerUsage": 1,
-"ecoCertified": true,
-"images": ["Smart_plug1.png", "Smart_plug2.png","Smart_plug3.png"],
-"description": "Smart plug"
-},
-{
-"name": "Power meter",
-"category": "Energy",
-"price": 49,
-"stock": 18,
-"energyRating": "A",
-"brand": "Shelly",
-"condition": "New",
-"powerUsage": 2,
-"ecoCertified": true,
-"images": ["Power_meter1.png", "Power_meter2.png", "Power_meter3.png"],
-"description": "Energy monitor"
-}
+  {
+    "name": "Kettle",
+    "category": "Kitchen",
+    "price": 39,
+    "stock": 15,
+    "energyRating": "A",
+    "brand": "Bosch",
+    "condition": "New",
+    "powerUsage": 1800,
+    "ecoCertified": true,
+    "images": [
+      "Kettle1.png",
+      "Kettle2.png",
+      "Kettle3.png",
+      "Kettle4.png"
+    ],
+    "description": "Fast-boil electric kettle with auto switch-off to save energy."
+  },
+  {
+    "name": "Toaster",
+    "category": "Kitchen",
+    "price": 29,
+    "stock": 20,
+    "energyRating": "A",
+    "brand": "Philips",
+    "condition": "New",
+    "powerUsage": 800,
+    "ecoCertified": true,
+    "images": [
+      "Toaster1.png",
+      "Toaster2.png",
+      "Toaster3.png",
+      "Toaster4.png"
+    ],
+    "description": "Two-slot bread toaster with adjustable browning levels."
+  },
+  {
+    "name": "Blender",
+    "category": "Kitchen",
+    "price": 49,
+    "stock": 10,
+    "energyRating": "A",
+    "brand": "Kenwood",
+    "condition": "New",
+    "powerUsage": 600,
+    "ecoCertified": true,
+    "images": [
+      "Blender1.png",
+      "Blender2.png",
+      "Blender3.png",
+      "Blender4.png"
+    ],
+    "description": "Powerful kitchen blender for smoothies, soups and sauces."
+  },
+  {
+    "name": "Microwave",
+    "category": "Kitchen",
+    "price": 89,
+    "stock": 8,
+    "energyRating": "A",
+    "brand": "Samsung",
+    "condition": "New",
+    "powerUsage": 1200,
+    "ecoCertified": false,
+    "images": [
+      "Microwave1.png",
+      "Microwave2.png",
+      "Microwave3.png",
+      "Microwave4.png"
+    ],
+    "description": "Compact microwave oven with defrost and quick-start modes."
+  },
+  {
+    "name": "Fridge",
+    "category": "Kitchen",
+    "price": 499,
+    "stock": 5,
+    "energyRating": "A",
+    "brand": "LG",
+    "condition": "New",
+    "powerUsage": 150,
+    "ecoCertified": true,
+    "images": [
+      "Fridge1.png",
+      "Fridge2.png",
+      "Fridge3.png"
+    ],
+    "description": "Energy-efficient refrigerator with a spacious freezer section."
+  },
+  {
+    "name": "Hoover",
+    "category": "Cleaning",
+    "price": 129,
+    "stock": 12,
+    "energyRating": "A",
+    "brand": "Dyson",
+    "condition": "New",
+    "powerUsage": 700,
+    "ecoCertified": true,
+    "images": [
+      "Hoover1.png",
+      "Hoover2.png",
+      "Hoover3.png"
+    ],
+    "description": "Bagless vacuum cleaner with a washable filter."
+  },
+  {
+    "name": "Mop",
+    "category": "Cleaning",
+    "price": 25,
+    "stock": 30,
+    "energyRating": "A",
+    "brand": "Vileda",
+    "condition": "New",
+    "powerUsage": 0,
+    "ecoCertified": true,
+    "images": [
+      "Mop1.png",
+      "Mop2.png",
+      "Mop3.png"
+    ],
+    "description": "Reusable flat floor mop with washable microfibre pads."
+  },
+  {
+    "name": "Steam cleaner",
+    "category": "Cleaning",
+    "price": 99,
+    "stock": 7,
+    "energyRating": "A",
+    "brand": "Karcher",
+    "condition": "New",
+    "powerUsage": 1200,
+    "ecoCertified": true,
+    "images": [
+      "Steam_cleaner1.png",
+      "Steam_cleaner2.png",
+      "Steam_cleaner3.png",
+      "Steam_cleaner4.png"
+    ],
+    "description": "Chemical-free steam cleaner for floors, tiles and kitchens."
+  },
+  {
+    "name": "Washing machine",
+    "category": "Laundry",
+    "price": 549,
+    "stock": 4,
+    "energyRating": "A",
+    "brand": "Bosch",
+    "condition": "New",
+    "powerUsage": 2000,
+    "ecoCertified": true,
+    "images": [
+      "Washing_machine1.png",
+      "Washing_machine2.png",
+      "Washing_machine3.png"
+    ],
+    "description": "Quiet washing machine with eco wash and quick wash programmes."
+  },
+  {
+    "name": "Dryer",
+    "category": "Laundry",
+    "price": 499,
+    "stock": 6,
+    "energyRating": "A",
+    "brand": "Whirlpool",
+    "condition": "New",
+    "powerUsage": 2200,
+    "ecoCertified": false,
+    "images": [
+      "Dryer1.png",
+      "Dryer2.png",
+      "Dryer3.png"
+    ],
+    "description": "Heat-pump clothes dryer that uses less electricity."
+  },
+  {
+    "name": "Air purifier",
+    "category": "Air",
+    "price": 149,
+    "stock": 9,
+    "energyRating": "A",
+    "brand": "Xiaomi",
+    "condition": "New",
+    "powerUsage": 50,
+    "ecoCertified": true,
+    "images": [
+      "Air_purifier1.png",
+      "Air_purifier2.png",
+      "Air_purifier3.png",
+      "Air_purifier4.png"
+    ],
+    "description": "HEPA air purifier that removes dust, pollen and smoke."
+  },
+  {
+    "name": "Dehumidifier",
+    "category": "Air",
+    "price": 179,
+    "stock": 6,
+    "energyRating": "A",
+    "brand": "Meaco",
+    "condition": "New",
+    "powerUsage": 250,
+    "ecoCertified": true,
+    "images": [
+      "Dehumidifier1.png",
+      "Dehumidifier2.png",
+      "Dehumidifier3.png"
+    ],
+    "description": "Dehumidifier that reduces damp and mould in your home."
+  },
+  {
+    "name": "Fan",
+    "category": "Air",
+    "price": 59,
+    "stock": 15,
+    "energyRating": "A",
+    "brand": "Honeywell",
+    "condition": "New",
+    "powerUsage": 45,
+    "ecoCertified": true,
+    "images": [
+      "Fan1.png",
+      "Fan2.png",
+      "Fan3.png"
+    ],
+    "description": "Quiet electric fan with three speed settings."
+  },
+  {
+    "name": "Heater",
+    "category": "Air",
+    "price": 119,
+    "stock": 11,
+    "energyRating": "A",
+    "brand": "Delonghi",
+    "condition": "New",
+    "powerUsage": 2000,
+    "ecoCertified": false,
+    "images": [
+      "Heater1.png",
+      "Heater2.png",
+      "Heater3.png"
+    ],
+    "description": "Room heater with thermostat and timer for efficient heating."
+  },
+  {
+    "name": "Solar panel",
+    "category": "Energy",
+    "price": 799,
+    "stock": 3,
+    "energyRating": "A",
+    "brand": "EcoFlow",
+    "condition": "New",
+    "powerUsage": 300,
+    "ecoCertified": true,
+    "images": [
+      "Solar_panel1.png",
+      "Solar_panel2.png",
+      "Solar_panel3.png"
+    ],
+    "description": "Solar panel kit to produce your own clean electricity."
+  },
+  {
+    "name": "Smart plug",
+    "category": "Energy",
+    "price": 19,
+    "stock": 40,
+    "energyRating": "A",
+    "brand": "TPLink",
+    "condition": "New",
+    "powerUsage": 1,
+    "ecoCertified": true,
+    "images": [
+      "Smart_plug1.png",
+      "Smart_plug2.png",
+      "Smart_plug3.png"
+    ],
+    "description": "Smart plug to control and schedule devices from your phone."
+  },
+  {
+    "name": "Power meter",
+    "category": "Energy",
+    "price": 49,
+    "stock": 18,
+    "energyRating": "A",
+    "brand": "Shelly",
+    "condition": "New",
+    "powerUsage": 2,
+    "ecoCertified": true,
+    "images": [
+      "Power_meter1.png",
+      "Power_meter2.png",
+      "Power_meter3.png"
+    ],
+    "description": "Energy monitor that shows how much electricity you use."
+  }
 ]

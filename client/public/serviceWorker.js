@@ -1,13 +1,10 @@
 const cacheName = 'react_app_version_1.0'
 
+// only files that really exist in the public folder
 const filesToCache =
         ['manifest.json',
          'index.html',
-         'offline.html',
-         '/css/offline.css',
-         '/icons/icon_small.png',
-         '/icons/icon_medium.png',
-         '/icons/icon_large.png'
+         'offline.html'
         ]
 
 

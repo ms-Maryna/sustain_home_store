@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { SERVER_HOST } from "../config/global_constants";
 
+const CONDITIONS = ["New", "Used", "Refurbished"];
+const ENERGY_RATINGS = ["A", "B", "C", "D", "E", "F", "G"];
+
 export const EditProduct = (props) => {
   const productId = props.match.params.id;
 
@@ -13,7 +16,7 @@ export const EditProduct = (props) => {
   const [stock, setStock] = useState("");
   const [powerUsage, setPowerUsage] = useState("");
   const [energyRating, setEnergyRating] = useState("A");
-  const [condition, setCondition] = useState("new"); // must be lowercase for DB enum
+  const [condition, setCondition] = useState("New");
   const [ecoCertified, setEcoCertified] = useState(true);
   const [description, setDescription] = useState("");
   const [images, setImages] = useState([]); // new images to upload
@@ -31,7 +34,8 @@ export const EditProduct = (props) => {
         setStock(p.stock);
         setPowerUsage(p.powerUsage);
         setEnergyRating(p.energyRating);
-        setCondition(p.condition); // already lowercase from DB
+        // older products may have "new" in lower case
+        setCondition(p.condition ? p.condition.charAt(0).toUpperCase() + p.condition.slice(1).toLowerCase() : "New");
         setEcoCertified(p.ecoCertified);
         setDescription(p.description);
       })
@@ -91,14 +95,12 @@ export const EditProduct = (props) => {
         <input type="number" placeholder="Price" value={price} onChange={e => setPrice(e.target.value)} required />
         <input type="number" placeholder="Stock" value={stock} onChange={e => setStock(e.target.value)} required />
         <input type="number" placeholder="Power Usage" value={powerUsage} onChange={e => setPowerUsage(e.target.value)} />
-        <input placeholder="Energy Rating" value={energyRating} onChange={e => setEnergyRating(e.target.value)} />
+        <select value={energyRating} onChange={e => setEnergyRating(e.target.value)} aria-label="Energy Rating">
+          {ENERGY_RATINGS.map(r => <option key={r} value={r}>Energy rating {r}</option>)}
+        </select>
         
         <select value={condition} onChange={e => setCondition(e.target.value)}>
-          {["new", "used", "refurbished"].map(c => (
-            <option key={c} value={c}>
-              {c.charAt(0).toUpperCase() + c.slice(1)}
-            </option>
-          ))}
+          {CONDITIONS.map(c => <option key={c} value={c}>{c}</option>)}
         </select>
 
         <label>

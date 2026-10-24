@@ -1,25 +1,12 @@
 {
-   "name": "react_app",
-   "short_name": "react_app",
-   "description": "react_app Worked Example",
+   "name": "Sustain Home Store",
+   "short_name": "SustainHome",
+   "description": "Eco-friendly home appliances for Ireland and the EU",
    "start_url": "./",
    "scope": ".",
    "display": "standalone",
    "background_color": "white",
-   "theme_color": "white",
+   "theme_color": "#0b2a1a",
    "orientation": "any",
-   "icons": [{
-      "src": "icons/icon_small.png",
-      "sizes": "16x16 64x64",
-      "type": "image/png"
-    }, {
-      "src": "icons/icon_medium.png",
-      "sizes": "128x128 512x512",
-      "type": "image/png"
-    }, {
-      "src": "icons/icon_large.png",
-      "sizes": "1024x1024",
-      "type": "image/png",
-      "purpose": "maskable"
-    }]
+   "icons": []
 }

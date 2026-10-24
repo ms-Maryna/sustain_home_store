@@ -44,7 +44,7 @@ export const ProductsAdminList = () => {
   const filteredProducts = products
     .filter(p => filter === "all" || p.category === filter)
     .filter(p => p.name.toLowerCase().includes(search.toLowerCase()))
-    .sort((a, b) => a[sortField] > b[sortField] ? 1 : -1)
+    .sort((a, b) => sortField === "name" ? a.name.localeCompare(b.name) : a[sortField] - b[sortField])
 
   return (
     <div className="productsTable">
@@ -59,6 +59,11 @@ export const ProductsAdminList = () => {
               {c === "all" ? "All Categories" : c}
             </option>
           ))}
+        </select>
+        <select value={sortField} onChange={e => setSortField(e.target.value)} aria-label="Sort by">
+          <option value="name">Sort: Name</option>
+          <option value="price">Sort: Price</option>
+          <option value="stock">Sort: Stock</option>
         </select>
         <Link to="/products/add" className="btnAdd">Add Product</Link>
       </div>
@@ -78,7 +83,7 @@ export const ProductsAdminList = () => {
     <tr key={p._id}>
       <td>{p.name}</td>
       <td>{p.category}</td>
-      <td>{p.price}</td>
+      <td>€{Number(p.price).toFixed(2)}</td>
       <td>{p.stock}</td>
       <td className="actionsCell">
         <Link to={`/products/edit/${p._id}`} className="editBtn">Edit</Link>

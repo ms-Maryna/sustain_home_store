@@ -65,7 +65,7 @@ export const CustomerDetails = (props) => {
                     {customer.purchases.map(p => (
 
                         <li key={p._id}>
-                            Order: {p._id} — {p.total} $
+                            Order #{p._id.slice(-6).toUpperCase()} — €{p.total.toFixed(2)} — {p.status} — {new Date(p.date).toLocaleDateString("en-IE")}
                         </li>
 
                     ))}

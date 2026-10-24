@@ -1,70 +1,93 @@
 import React, {useState} from "react"
+import {Redirect, Link} from "react-router-dom"
 import axios from "axios"
-
+import {Button} from "./Button"
 import {SERVER_HOST} from "../config/global_constants"
+import {getCart} from "../config/cart"
 
+export const Register = () =>
+{
+    const [name, setName] = useState("")
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    const [confirmPassword, setConfirmPassword] = useState("")
+    const [errorMessage, setErrorMessage] = useState("")
+    const [isRegistered, setIsRegistered] = useState(false)
 
+    const validate = () =>
+    {
+        if(name.trim().length < 2) return "Name must be at least 2 characters"
+        if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) return "Email is not valid"
+        if(password.length < 8) return "Password must be at least 8 characters"
+        if(password !== confirmPassword) return "Passwords do not match"
+        return ""
+    }
 
-export const Register = () => {
-
-    const [name,setName] = useState("")
-    const [email,setEmail] = useState("")
-    const [password,setPassword] = useState("")
-    const [error,setError] = useState("")
-
-    const register = e => {
-
+    const handleSubmit = e =>
+    {
         e.preventDefault()
 
-        axios.post(`${SERVER_HOST}/users/register/${name}/${email}/${password}`)
+        const msg = validate()
+        if(msg !== "")
+        {
+            setErrorMessage(msg)
+            return
+        }
 
-        .then(res => {
+        setErrorMessage("")
 
+        // the details are sent in the request body (not in the URL)
+        axios.post(`${SERVER_HOST}/api/users/register`, {name: name.trim(), email: email.trim(), password})
+        .then(res =>
+        {
             localStorage.name = res.data.name
             localStorage.accessLevel = res.data.accessLevel
             localStorage.token = res.data.token
-
-            window.location = "/"
-
+            setIsRegistered(true)
         })
-
-        .catch(() => setError("User already exists"))
-
+        .catch(err =>
+        {
+            setErrorMessage(err.response && err.response.data && err.response.data.message ? err.response.data.message : "Registration failed")
+        })
     }
 
-    return(
+    return (
+        <form className="loginCard" noValidate={true} onSubmit={handleSubmit}>
+            <h2 className="loginTitle">Create an account</h2>
 
-        <div>
+            {isRegistered ? <Redirect to={getCart().length > 0 ? "/products/checkout" : "/account/profile"}/> : null}
 
-            <h2>Register</h2>
+            {errorMessage ? <div className="error-message">{errorMessage}</div> : null}
 
-            {error && <p>{error}</p>}
+            <div className="loginField">
+                <label htmlFor="registerName">Name</label>
+                <input id="registerName" autoComplete="name" placeholder="Enter your name" value={name} onChange={e => setName(e.target.value)} autoFocus/>
+            </div>
 
-            <form onSubmit={register}>
+            <div className="loginField">
+                <label htmlFor="registerEmail">Email</label>
+                <input id="registerEmail" type="email" autoComplete="email" placeholder="Enter your email" value={email} onChange={e => setEmail(e.target.value)}/>
+            </div>
 
-                <input
-                    placeholder="Name"
-                    value={name}
-                    onChange={e=>setName(e.target.value)}
-                />
+            <div className="loginField">
+                <label htmlFor="registerPassword">Password</label>
+                <input id="registerPassword" type="password" autoComplete="new-password" placeholder="At least 8 characters" value={password} onChange={e => setPassword(e.target.value)}/>
+            </div>
 
-                <input
-                    placeholder="Email"
-                    value={email}
-                    onChange={e=>setEmail(e.target.value)}
-                />
+            <div className="loginField">
+                <label htmlFor="registerConfirm">Confirm password</label>
+                <input id="registerConfirm" type="password" autoComplete="new-password" placeholder="Type the password again" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)}/>
+            </div>
 
-                <input
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={e=>setPassword(e.target.value)}
-                />
+            <div className="loginActions">
+                <Button value="Register" className="green-button" type="submit"/>
+                <Link className="cancelButton" to="/products">Cancel</Link>
+            </div>
 
-                <button>Register</button>
-
-            </form>
-
-        </div>
+            <div className="authHint">
+                <p className="authHintText">Already have an account?</p>
+                <Link className="authHintLink" to="/login">Log in here</Link>
+            </div>
+        </form>
     )
 }

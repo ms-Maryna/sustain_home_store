@@ -10,7 +10,7 @@ export const AdminPanel = () => {
 
     return(
 
-        <div className="adminPanel">
+        <div className="adminLayout">
 
             <aside className="adminSidebar">
 

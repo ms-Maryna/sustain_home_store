@@ -8,7 +8,7 @@ import {ReturnProducts} from "./ReturnProducts"
 export const CustomerDashboard = () =>
 {
     return (
-        <div className="adminTable">
+        <div className="accountPage">
 
             <h1 className="dashboardTitle">My Account</h1>
 

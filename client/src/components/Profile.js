@@ -26,6 +26,7 @@ export const Profile = () =>
                 setPreview(`${SERVER_HOST}/uploads/${res.data.profileImage}`)
             }
         })
+        .catch(() => setError("Failed to load your profile"))
     },[])
 
 
@@ -50,12 +51,20 @@ export const Profile = () =>
     const handleSubmit = e =>
     {
         e.preventDefault()
+        setError("")
+        setSuccess("")
+
+        if(!user.name || user.name.trim().length < 2)
+        {
+            setError("Name must be at least 2 characters")
+            return
+        }
 
         const formData = new FormData()
 
         formData.append("name", user.name)
-        formData.append("phone", user.phone)
-        formData.append("address", user.address)
+        formData.append("phone", user.phone || "")
+        formData.append("address", user.address || "")
 
         if(image)
         {
@@ -83,7 +92,7 @@ export const Profile = () =>
 })
         .catch(err =>
         {
-            setError("Profile update failed")
+            setError(err.response && err.response.data && err.response.data.message ? err.response.data.message : "Profile update failed")
         })
     }
 
@@ -147,7 +156,7 @@ export const Profile = () =>
                         onChange={handleChange}
                     />
 
-                    <button>Update Profile</button>
+                    <button type="submit" className="green-button">Update Profile</button>
 
                 </form>
 

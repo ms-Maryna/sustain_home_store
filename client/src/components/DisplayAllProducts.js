@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 import { SERVER_HOST } from "../config/global_constants";
 
 import { ProductCardGrid } from "./ProductCardGrid";
 import { ProductModal } from "./ProductModal";
+import { addToCart } from "../config/cart";
 
 export const DisplayAllProducts = () => {
   const [products, setProducts] = useState([]);       // all products from server
@@ -14,6 +16,7 @@ export const DisplayAllProducts = () => {
   const [sortOption, setSortOption] = useState("name");
 
   const [loading, setLoading] = useState(true);
+  const [toast, setToast] = useState(null); // small message after "Add to cart"
   const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
@@ -27,7 +30,7 @@ export const DisplayAllProducts = () => {
       })
       .catch(err => {
         if (isMounted) setErrorMessage(err.response?.data?.message || err.message);
-        setProducts([]); // fallback to empty array
+        if (isMounted) setProducts([]); // fallback to empty array
       })
       .finally(() => { if(isMounted) setLoading(false); });
 
@@ -47,13 +50,19 @@ export const DisplayAllProducts = () => {
   else if (sortOption === "priceLow") filtered.sort((a,b) => (a.price || 0) - (b.price || 0));
   else if (sortOption === "priceHigh") filtered.sort((a,b) => (b.price || 0) - (a.price || 0));
 
-  const addToCart = product => {
-    const saved = localStorage.getItem("cart");
-    const cart = saved ? JSON.parse(saved) : [];
-    const index = cart.findIndex(i => i._id === product._id);
-    if(index >= 0) cart[index].qty += 1;
-    else cart.push({ ...product, qty: 1 });
-    localStorage.setItem("cart", JSON.stringify(cart));
+  // hide the message after 2.5 seconds
+  useEffect(() => {
+    if (!toast) return;
+    const timer = setTimeout(() => setToast(null), 2500);
+    return () => clearTimeout(timer);
+  }, [toast]);
+
+  const handleAddToCart = product => {
+    if (addToCart(product)) {
+      setToast({ type: "success", text: `${product.name} added to cart` });
+    } else {
+      setToast({ type: "error", text: `Sorry, no more ${product.name} in stock` });
+    }
   };
 
   return (
@@ -86,8 +95,20 @@ export const DisplayAllProducts = () => {
         </div>
       </div>
 
-      <ProductCardGrid products={filtered} onSelect={setSelectedProduct} onAddToCart={addToCart} />
-      <ProductModal product={selectedProduct} onClose={() => setSelectedProduct(null)} />
+      <ProductCardGrid products={filtered} onSelect={setSelectedProduct} onAddToCart={handleAddToCart} />
+      <ProductModal
+        key={selectedProduct ? selectedProduct._id : "none"}
+        product={selectedProduct}
+        onClose={() => setSelectedProduct(null)}
+        onAddToCart={handleAddToCart}
+      />
+
+      {toast && (
+        <div className={`toast toast-${toast.type}`} role="status" aria-live="polite">
+          {toast.text}
+          {toast.type === "success" && <Link to="/products/cart" className="toastLink">View cart</Link>}
+        </div>
+      )}
     </div>
   );
 };

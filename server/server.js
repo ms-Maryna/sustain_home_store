@@ -17,14 +17,14 @@ const express = require("express");
 const createError = require("http-errors");
 const path = require("path");
 const cors = require("cors");
-const bodyParser = require("body-parser");
 
 // ===============================
 // Import routers
 // ===============================
 const productsRouter = require("./routes/products");
 const usersRouter = require("./routes/users");
-const purchasesRouter = require("./routes/purchases")
+const purchasesRouter = require("./routes/purchases");
+const paypalRoutes = require("./routes/paypalRoutes");
 
 // ===============================
 // Import error middleware
@@ -40,11 +40,12 @@ const app = express();
 // Middleware
 // ===============================
 
-// Parse JSON bodies
-app.use(bodyParser.json());
+// Parse JSON bodies (max 1MB)
+app.use(express.json({ limit: "1mb" }));
 
 // Enable CORS
-app.use(cors({ credentials: true, origin: process.env.LOCAL_HOST }));
+// CLIENT_URL = address of the React site online (demo), LOCAL_HOST = http://localhost:3000
+app.use(cors({ credentials: true, origin: process.env.CLIENT_URL || process.env.LOCAL_HOST }));
 
 // Serve static files (uploaded images)
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
@@ -58,11 +59,7 @@ app.get("/", (req, res) => res.send("Server works"));
 app.use("/api/products", productsRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/purchases", purchasesRouter);
-
-// Paypal
-const paypalRoutes = require("./routes/paypalRoutes")
-
-app.use("/api/paypal", paypalRoutes)
+app.use("/api/paypal", paypalRoutes);
 
 // ===============================
 // Catch 404 errors
@@ -80,6 +77,9 @@ app.use(errorHandler);
 // ===============================
 // Start server
 // ===============================
-app.listen(process.env.SERVER_PORT, () => {
-  console.log(`Connected to port ${process.env.SERVER_PORT}`);
+// hosting websites (for example Render) give the port in PORT
+const port = process.env.PORT || process.env.SERVER_PORT;
+
+app.listen(port, () => {
+  console.log(`Connected to port ${port}`);
 });

@@ -1,5 +1,5 @@
 import React from "react"
-import {BrowserRouter, Switch, Route} from "react-router-dom"
+import {BrowserRouter, Switch, Route, Redirect} from "react-router-dom"
 
 import {ACCESS_LEVEL_GUEST} from "./config/global_constants"
 
@@ -19,23 +19,13 @@ import {LoggedInRoute} from "./components/LoggedInRoute"
 import {Login} from "./components/Login"
 import {Register} from "./components/Register"
 import {Logout} from "./components/Logout"
-import {Profile} from "./components/Profile"
-import {PurchaseHistory} from "./components/PurchaseHistory"
 
 import {AdminPanel} from "./components/AdminPanel"
-import {ProductsAdminList} from "./components/ProductsAdminList"
-import {CustomersDashboard} from "./components/CustomersDashboard"
 import {CustomerDashboard} from "./components/CustomerDashboard"
-import {PurchasesDashboard} from "./components/PurchasesDashboard"
-import {Cart} from "./components/Cart"
-import {Checkout} from "./components/Checkout"
-import {Payment} from "./components/Payment"
-
-
 
 import "./css/App.css"
 
-// create default session once (AFTER imports)
+// create a default guest session once
 if(!localStorage.getItem("accessLevel") || localStorage.getItem("accessLevel") === "undefined")
 {
     localStorage.setItem("name", "GUEST")
@@ -60,25 +50,20 @@ export const App = props =>
                     <Route exact path="/register" component={Register}/>
 
                     <LoggedInRoute exact path="/logout" component={Logout}/>
-                    
-                    
                     <LoggedInRoute path="/account" component={CustomerDashboard}/>
 
                     {/* ADMIN routes */}
+                    <AdministratorRoute path="/admin" component={AdminPanel}/>
+                    <AdministratorRoute exact path="/products/add" component={AddProduct}/>
+                    <AdministratorRoute exact path="/products/edit/:id" component={EditProduct}/>
 
-                    <AdministratorRoute  path="/admin" component={AdminPanel}/>
-                  <AdministratorRoute path="/products/add" component={AddProduct}/>
-                    <AdministratorRoute  path="/products/edit/:id" component={EditProduct}/>
-
-                    {/* STORE */}
-
+                    {/* STORE (cart, checkout and payment are inside StorePage) */}
                     <Route path="/products" component={StorePage}/>
-                   
-                    <Route exact path="/cart" component={Cart}/>
-                    <Route exact path="/payment" component={Payment}/>
 
-                    <Route exact path="/checkout" component={Checkout}/>
-
+                    {/* short links */}
+                    <Redirect exact from="/cart" to="/products/cart"/>
+                    <Redirect exact from="/checkout" to="/products/checkout"/>
+                    <Redirect exact from="/payment" to="/products/payment"/>
 
                     <Route path="/paypal/:messageType" component={PayPalMessage}/>
 

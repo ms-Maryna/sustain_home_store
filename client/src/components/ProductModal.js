@@ -83,8 +83,8 @@ export const ProductModal = props =>
 
                     <div className="modal-info">
                         <p><b>Category:</b> {props.product.category}</p>
-                        <p><b>Price:</b> €{props.product.price}</p>
-                        <p><b>Stock:</b> {props.product.stock}</p>
+                        <p><b>Price:</b> €{Number(props.product.price).toFixed(2)}</p>
+                        <p><b>Stock:</b> {props.product.stock > 0 ? props.product.stock : "Out of stock"}</p>
                         <p><b>Brand:</b> {props.product.brand}</p>
                         <p><b>Energy:</b> {props.product.energyRating}</p>
                         <p><b>Condition:</b> {props.product.condition}</p>
@@ -95,6 +95,10 @@ export const ProductModal = props =>
                 </div>
 
                 <div className="modal-footer">
+                    {props.onAddToCart && props.product.stock > 0 ?
+                        <button className="green-button" onClick={() => props.onAddToCart(props.product)}>Add to cart</button>
+                    : null}
+                    <span className="gap"></span>
                     <button className="blue-button" onClick={props.onClose}>Close</button>
                 </div>
             </div>

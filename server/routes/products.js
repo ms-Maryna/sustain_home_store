@@ -1,130 +1,162 @@
-const router = require("express").Router();
-const createError = require("http-errors");
-const productsModel = require("../models/products");
-const fs = require("fs");
-const path = require("path");
-const jwt = require("jsonwebtoken");
-const { uploadProductImages } = require("../middleware/middlewareFile");
+const router = require("express").Router()
+const createError = require("http-errors")
+const mongoose = require("mongoose")
+const fs = require("fs")
+const path = require("path")
 
-// KEYS for JWT verification
-const PRIVATE_KEY = fs.readFileSync(path.join(__dirname, "../keys/private.pem"), "utf8");
-const PUBLIC_KEY = fs.readFileSync(path.join(__dirname, "../keys/public.pem"), "utf8");
+const productsModel = require("../models/products")
+const {uploadProductImages} = require("../middleware/middlewareFile")
+const {verifyToken, requireAdmin} = require("../middleware/authMiddleware")
+
+const ALLOWED_IMAGE_TYPES = ["image/png", "image/jpg", "image/jpeg"]
+
+
+// ===== Helpers =====
+
+// delete uploaded files (used when something is wrong with the request)
+const deleteUploadedFiles = files =>
+{
+    (files || []).forEach(file =>
+    {
+        fs.unlink(path.join(process.env.UPLOADED_FILES_FOLDER, "products", file.filename), () => {})
+    })
+}
+
+// form-data sends everything as text, so convert numbers and booleans
+const convertFormFields = body =>
+{
+    if(body.price !== undefined) body.price = Number(body.price)
+    if(body.stock !== undefined) body.stock = Number(body.stock)
+    if(body.powerUsage !== undefined) body.powerUsage = Number(body.powerUsage)
+    if(body.ecoCertified !== undefined) body.ecoCertified = (body.ecoCertified === "true" || body.ecoCertified === true)
+    return body
+}
+
+// multer saves the files first, then the token is checked.
+// If the user is not an admin, the uploaded files are deleted again.
+const checkAdminAndCleanUp = (req, res, next) =>
+{
+    verifyToken(req, res, err =>
+    {
+        if(err)
+        {
+            deleteUploadedFiles(req.files)
+            return next(err)
+        }
+        requireAdmin(req, res, err2 =>
+        {
+            if(err2) deleteUploadedFiles(req.files)
+            next(err2)
+        })
+    })
+}
+
+const hasInvalidImage = files => (files || []).some(f => !ALLOWED_IMAGE_TYPES.includes(f.mimetype))
 
 
 // ===== GET all products =====
-router.get("/", (req, res, next) => {
+router.get("/", (req, res, next) =>
+{
     productsModel.find({})
-        .then(data => res.json(data))
-        .catch(err => next(err));
-});
+    .then(data => res.json(data))
+    .catch(err => next(err))
+})
 
 
 // ===== GET one product by ID =====
-router.get("/:id", (req, res, next) => {
+router.get("/:id", (req, res, next) =>
+{
+    if(!mongoose.Types.ObjectId.isValid(req.params.id)) return next(createError(404, "Product not found"))
+
     productsModel.findById(req.params.id)
-        .then(data => {
-            if(!data) return next(createError(404, "Product not found"));
-            res.json(data);
-        })
-        .catch(err => next(err));
-});
+    .then(data =>
+    {
+        if(!data) return next(createError(404, "Product not found"))
+        res.json(data)
+    })
+    .catch(err => next(err))
+})
 
 
 // ===== ADD product (ADMIN) =====
-router.post("/", uploadProductImages.array("images", 10), (req, res, next) => {
-    const token = req.headers.authorization;
-    if (!token) return next(createError(403, "No token provided"));
+router.post("/", uploadProductImages.array("images", 10), checkAdminAndCleanUp, (req, res, next) =>
+{
+    if(!req.files || req.files.length === 0) return next(createError(400, "At least 1 image required"))
 
-    jwt.verify(token, PUBLIC_KEY, { algorithms: ["RS256"] }, (err, decoded) => {
-        if (err) return next(createError(403, "Invalid token"));
-        if (decoded.accessLevel < parseInt(process.env.ACCESS_LEVEL_ADMIN))
-            return next(createError(403, "Not an admin"));
+    if(hasInvalidImage(req.files))
+    {
+        deleteUploadedFiles(req.files)
+        return next(createError(400, "Invalid image type. Use PNG or JPG"))
+    }
 
-        // Check uploaded images
-        if (!req.files || req.files.length === 0)
-            return next(createError(400, "At least 1 image required"));
+    const product = convertFormFields(req.body)
+    product.images = req.files.map(f => f.filename)
 
-        // Validate image types
-        for (let f of req.files) {
-            if (!["image/png", "image/jpg", "image/jpeg"].includes(f.mimetype)) {
-                // Delete uploaded files if invalid
-                req.files.forEach(file =>
-                    fs.unlinkSync(`${process.env.UPLOADED_FILES_FOLDER}/${file.filename}`)
-                );
-                return next(createError(400, "Invalid image type"));
-            }
-        }
-
-        // Prepare body for DB
-        req.body.images = req.files.map(f => f.filename);
-        req.body.price = Number(req.body.price);
-        req.body.stock = Number(req.body.stock);
-        req.body.powerUsage = Number(req.body.powerUsage);
-        req.body.ecoCertified = (req.body.ecoCertified === "true" || req.body.ecoCertified === true);
-
-        productsModel.create(req.body)
-            .then(product => res.json(product))
-            .catch(err => next(err));
-    });
-});
+    productsModel.create(product)
+    .then(data => res.json(data))
+    .catch(err =>
+    {
+        deleteUploadedFiles(req.files)
+        next(createError(400, err.message))
+    })
+})
 
 
 // ===== UPDATE product (ADMIN) =====
-// Important: Added multer middleware here for handling new images
-router.put("/:id", uploadProductImages.array("images", 10), (req, res, next) => {
-    const token = req.headers.authorization;
-    if (!token) return next(createError(403, "No token provided"));
+router.put("/:id", uploadProductImages.array("images", 10), checkAdminAndCleanUp, (req, res, next) =>
+{
+    if(!mongoose.Types.ObjectId.isValid(req.params.id))
+    {
+        deleteUploadedFiles(req.files)
+        return next(createError(404, "Product not found"))
+    }
 
-    jwt.verify(token, PUBLIC_KEY, { algorithms: ["RS256"] }, (err, decoded) => {
-        if (err) return next(createError(403, "Invalid token"));
-        if (decoded.accessLevel < parseInt(process.env.ACCESS_LEVEL_ADMIN))
-            return next(createError(403, "Not an admin"));
+    if(hasInvalidImage(req.files))
+    {
+        deleteUploadedFiles(req.files)
+        return next(createError(400, "Invalid image type. Use PNG or JPG"))
+    }
 
-        // If new images uploaded, replace the 'images' field
-        if (req.files && req.files.length > 0) {
-            req.body.images = req.files.map(f => f.filename);
-        }
+    const update = convertFormFields(req.body)
+    delete update._id
 
-        // Convert numeric and boolean fields
-        req.body.price = Number(req.body.price);
-        req.body.stock = Number(req.body.stock);
-        req.body.powerUsage = Number(req.body.powerUsage);
-        req.body.ecoCertified = (req.body.ecoCertified === "true" || req.body.ecoCertified === true);
+    // if new images were uploaded, they replace the old ones
+    if(req.files && req.files.length > 0)
+    {
+        update.images = req.files.map(f => f.filename)
+    }
+    else
+    {
+        delete update.images
+    }
 
- 
-
-       productsModel.findByIdAndUpdate(
-            req.params.id,
-            { $set: req.body },
-            { returnDocument: "after" } 
-        )
-            .then(data => {
-                if (!data) return next(createError(404, "Product not found"));
-                res.json(data);
-            })
-            .catch(err => next(err));
-    });
-});
+    productsModel.findByIdAndUpdate(req.params.id, {$set: update}, {returnDocument: "after", runValidators: true})
+    .then(data =>
+    {
+        if(!data) return next(createError(404, "Product not found"))
+        res.json(data)
+    })
+    .catch(err =>
+    {
+        deleteUploadedFiles(req.files)
+        next(createError(400, err.message))
+    })
+})
 
 
 // ===== DELETE product (ADMIN) =====
-router.delete("/:id", (req, res, next) => {
-    const token = req.headers.authorization;
-    if (!token) return next(createError(403, "No token provided"));
+router.delete("/:id", verifyToken, requireAdmin, (req, res, next) =>
+{
+    if(!mongoose.Types.ObjectId.isValid(req.params.id)) return next(createError(404, "Product not found"))
 
-    jwt.verify(token, PUBLIC_KEY, { algorithms: ["RS256"] }, (err, decoded) => {
-        if (err) return next(createError(403, "Invalid token"));
-        if (decoded.accessLevel < parseInt(process.env.ACCESS_LEVEL_ADMIN))
-            return next(createError(403, "Not an admin"));
-
-        productsModel.findByIdAndDelete(req.params.id)
-            .then(data => {
-                if (!data) return next(createError(404, "Product not found"));
-                res.json({ message: "Product deleted" });
-            })
-            .catch(err => next(err));
-    });
-});
+    productsModel.findByIdAndDelete(req.params.id)
+    .then(data =>
+    {
+        if(!data) return next(createError(404, "Product not found"))
+        res.json({message: "Product deleted"})
+    })
+    .catch(err => next(err))
+})
 
 
-module.exports = router;
+module.exports = router

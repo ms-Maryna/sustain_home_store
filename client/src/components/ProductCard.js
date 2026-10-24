@@ -1,4 +1,3 @@
-// src/components/ProductCard.jsx
 import React from "react"
 import {SERVER_HOST} from "../config/global_constants"
 
@@ -57,7 +56,11 @@ export const ProductCard = ({product, onSelect, onAddToCart}) =>
                 </p>
 
                 <div className="productActions">
-                    <button className="btnPrimary" onClick={addHandler}>Add to cart</button>
+                    {product.stock > 0 ?
+                        <button className="btnPrimary" onClick={addHandler}>Add to cart</button>
+                    :
+                        <button className="btnPrimary" disabled>Out of stock</button>
+                    }
                     <button className="btnGhost" onClick={detailsHandler}>Details</button>
                 </div>
             </div>

@@ -2,13 +2,8 @@ import React, { useState } from "react"
 import { Redirect, Link } from "react-router-dom"
 import axios from "axios"
 import { Button } from "../components/Button"
-import { SERVER_HOST, ACCESS_LEVEL_GUEST } from "../config/global_constants"
-
-if (typeof localStorage.accessLevel === "undefined") {
-    localStorage.name = "GUEST"
-    localStorage.accessLevel = ACCESS_LEVEL_GUEST
-    localStorage.token = null
-}
+import { SERVER_HOST } from "../config/global_constants"
+import { getCart } from "../config/cart"
 
 export const Login = props => {
     const [email, setEmail] = useState("")
@@ -23,9 +18,13 @@ export const Login = props => {
         e.preventDefault()
         setErrorMessage("")
 
-        axios.post(
-            `${SERVER_HOST}/api/users/login/${encodeURIComponent(email)}/${encodeURIComponent(password)}`
-        )
+        if (!email.trim() || !password) {
+            setErrorMessage("Please enter your email and password")
+            return
+        }
+
+        // email and password are sent in the request body (not in the URL)
+        axios.post(`${SERVER_HOST}/api/users/login`, { email: email.trim(), password })
         .then(res => {
             localStorage.name = res.data.name
             localStorage.accessLevel = res.data.accessLevel
@@ -46,13 +45,19 @@ export const Login = props => {
         <form className="loginCard" noValidate={true} id="loginOrRegistrationForm" onSubmit={handleSubmit}>
             <h2 className="loginTitle">Login</h2>
 
-            {isLoggedIn && <Redirect to="/products" />}
+            {/* if there is something in the cart, go straight to checkout */}
+            {isLoggedIn && <Redirect to={getCart().length > 0 ? "/products/checkout" : "/products"} />}
+
+            {/* shown when the login expired (see index.js) */}
+            {!errorMessage && props.location && props.location.search.includes("expired=true") &&
+                <div className="info-box noticeBox">Your session has expired. Please log in again.</div>}
 
             {errorMessage && <div className="error-message">{errorMessage}</div>}
 
             <div className="loginField">
-                <label>Email</label>
+                <label htmlFor="loginEmail">Email</label>
                 <input
+                    id="loginEmail"
                     type="email"
                     name="email"
                     placeholder="Enter your email"
@@ -64,8 +69,9 @@ export const Login = props => {
             </div>
 
             <div className="loginField">
-                <label>Password</label>
+                <label htmlFor="loginPassword">Password</label>
                 <input
+                    id="loginPassword"
                     type="password"
                     name="password"
                     placeholder="Enter your password"
@@ -93,7 +99,7 @@ export const Login = props => {
                     Guest customers can still order online without registering.
                 </p>
 
-                <Link className="guestCheckoutButton" to="/checkout">
+                <Link className="guestCheckoutButton" to="/products/checkout">
                     Checkout as Guest
                 </Link>
             </div>

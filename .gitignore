@@ -1,4 +1,21 @@
+# Dependencies
 node_modules/
-build/
+
+# Secrets - never upload these
 .env
+server/config/.env
+server/keys/*.pem
+
+# User uploads (profile photos)
+server/uploads/profile/
+
+# Build output
+build/
+client/build/
+
+# IDE / OS files
+nbproject/private/
+.vs/
+.idea/
 .DS_Store
+Thumbs.db
