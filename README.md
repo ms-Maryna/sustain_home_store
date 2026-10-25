@@ -5,6 +5,18 @@ Built for the Full Stack Development module at Dundalk Institute of Technology (
 
 **Tech:** React.js · Node.js / Express · MongoDB (Mongoose) · JWT (RS256) · PayPal Sandbox
 
+## Live demo
+
+**Website:** https://sustain-home-store.onrender.com
+
+| Role | How to log in |
+|---|---|
+| Administrator | Email: `admin@sustainhome.ie` · Password: `DemoAdmin2026` |
+| Customer | Register a new account, or check out as a guest |
+
+> The demo runs on free hosting, so the first page load can take up to a minute while the server wakes up.
+> Payments use the PayPal **sandbox** (test money only).
+
 ## Features
 
 **Customers**
@@ -53,6 +65,13 @@ cd client
 npm install
 npm start                              # http://localhost:3000
 ```
+
+## Online deployment
+
+- **Database:** MongoDB Atlas (free cluster) – `MONGODB_URI`
+- **Server:** Render Web Service – root directory `server`, start command `node server.js`
+- **Client:** Render Static Site – root directory `client`, build command `npm install && npm run build`,
+  publish directory `build`, environment variable `REACT_APP_SERVER_HOST`, rewrite rule `/*` → `/index.html`
 
 ## API overview
 
